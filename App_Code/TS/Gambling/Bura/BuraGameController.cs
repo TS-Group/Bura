@@ -36,67 +36,90 @@ namespace TS.Gambling.Bura
         }
 
         private Dictionary<int, BuraGame> _games;
+        private bool _stopGames = false;
 
-        public void CreateGame(int gameId, int playerId, int playTill, double amount, bool longGameStyle, bool stickAllowed, bool passHiddenCards)
+
+        public void StopGames()
         {
+            if (_stopGames)
+                throw new GamblingException(ErrorInfo.GAMES_ARE_STOPPED);
+            _stopGames = true;
+            foreach (int gameId in _games.Keys)
+            {
+                GetGame(gameId).CreateGameStopMessage();
+            }
+        }
+
+        public void CreateGame(int gameId, Player player, int playTill, double amount, bool longGameStyle, bool stickAllowed, bool passHiddenCards)
+        {
+            if (_stopGames)
+                throw new GamblingException("Game Creation not Allowed");
+
             if (_games.ContainsKey(gameId))
                 throw new GamblingException("GameID is busy");
+           
+            GamblingModel.Entities entities = new GamblingModel.Entities();
+            GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == player.PlayerId).FirstOrDefault();
+            if (dbPlayer != null)
+            {
+                player.Balance = dbPlayer.Balance;
+            }
 
-            BuraPlayer player = new BuraPlayer();
-            player.ClientId = playerId;
-            player.PlayerName = "Name " + playerId;
-            
-            Stream imageStream = new MemoryStream();
-            string path = HttpContext.Current.Server.MapPath("~/Skins/Default/Images/Common/img1.png");
-            Bitmap image = new Bitmap(path); 
-            image.Save(imageStream, ImageFormat.Png);
+            if ((decimal)amount > player.Balance)
+            {
+                throw new GamblingException(ErrorInfo.NOT_ENOUGH_MONEY);
+            }
 
-            // rewind the memory stream
-            imageStream.Position = 0;
+            BuraPlayer bp = new BuraPlayer();
+            bp.ClientId = player.PlayerId;
+            bp.PlayerName = player.PlayerName;
+            bp.Avatar = player.Avatar;
 
-            player.Avatar = new byte[imageStream.Length];
-            imageStream.Read(player.Avatar, 0, (int)imageStream.Length);
-
-            BuraGame game = new BuraGame(player, playTill, amount, longGameStyle, stickAllowed, passHiddenCards);
-            game.PlayerTurn = playerId;
+            BuraGame game = new BuraGame(bp, playTill, amount, longGameStyle, stickAllowed, passHiddenCards);
+            game.PlayerTurn = bp.PlayerId;
             game.GameId = gameId;
 
             GameContext.SetCurrentGame(game);
-            GameContext.SetCurrentPlayer(player);
+            GameContext.SetCurrentPlayer(bp);
 
             _games[gameId] = game;
         }
 
-        public void JoinGame(int gameId, int playerId)
+        public void JoinGame(int gameId, Player player)
         {
             if (! _games.ContainsKey(gameId))
                 throw new GamblingException("Game with GameID is not started");
-
-            BuraPlayer player = new BuraPlayer();
-            player.ClientId = playerId;
-            player.PlayerName = "Name " + playerId;
-
-            Stream imageStream = new MemoryStream();
-            string path = HttpContext.Current.Server.MapPath("~/Skins/Default/Images/Common/img.png");
-            Bitmap image = new Bitmap(path);
-            image.Save(imageStream, ImageFormat.Png);
-            // rewind the memory stream
-            imageStream.Position = 0;
-            player.Avatar = new byte[imageStream.Length];
-            imageStream.Read(player.Avatar, 0, (int)imageStream.Length);
-
-            _games[gameId].Players[playerId] = player;
+            
+            BuraGame buraGame = _games[gameId];
 
             GameContext.SetCurrentGame(_games[gameId]);
-            GameContext.SetCurrentPlayer(player);
 
-            _games[gameId].StartGame();
+            GamblingModel.Entities entities = new GamblingModel.Entities();
+            GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == player.PlayerId).FirstOrDefault();
+            if (dbPlayer != null)
+            {
+                player.Balance = dbPlayer.Balance;
+            }
+
+            if ((decimal)buraGame.Amount > player.Balance)
+            {
+                throw new GamblingException(ErrorInfo.NOT_ENOUGH_MONEY);
+            }
+            
+            BuraPlayer bp = new BuraPlayer();
+            bp.ClientId = player.PlayerId;
+            bp.PlayerName = player.PlayerName;
+            bp.Avatar = player.Avatar;
+
+            GameContext.SetCurrentPlayer(bp);
+
+            _games[gameId].JoinGame(bp);
         }
 
-        public void RematchGame(int newGameId)
+        public void RematchGame(int newGameId, int winnerPlayerId)
         {
-            CardGame rematchGame = GetGame(newGameId);
-            int playerId = GameContext.GetCurrentPlayer().PlayerId;
+            BuraGame rematchGame = GetGame(newGameId);
+            BuraPlayer player = (BuraPlayer)GameContext.GetCurrentPlayer();
             if (rematchGame == null)
             {
                 // create rematch game
@@ -109,14 +132,18 @@ namespace TS.Gambling.Bura
                 bool stickAllowed = buraGame.StickAllowed;
                 bool passHiddenCards = buraGame.PassHiddenCards;
 
-                CreateGame(gameId, playerId, playTill, amount, longGameStyle, stickAllowed, passHiddenCards);
+                CreateGame(gameId, player, playTill, amount, longGameStyle, stickAllowed, passHiddenCards);
                 rematchGame = GetGame(gameId);
                 rematchGame.IsRematch = true;
+                if (player.PlayerId == winnerPlayerId)
+                    rematchGame.LastCardTakerPlayer = player;
             }
             else
             {
                 // join to rematch game 
-                JoinGame(newGameId, playerId);
+                if (player.PlayerId == winnerPlayerId)
+                    rematchGame.LastCardTakerPlayer = player;
+                JoinGame(newGameId, player);
             }
             GameContext.SetCurrentGame(rematchGame);
         }
@@ -127,6 +154,16 @@ namespace TS.Gambling.Bura
                 return _games[gameId];
             else
                 return null;
+        }
+
+        public void RemoveGame(int gameId)
+        {
+            if (_games.ContainsKey(gameId))
+                _games.Remove(gameId);
+            /*
+            else
+                throw new GamblingException("Unable to remove Game (not found).");
+             * */
         }
 
         public Dictionary<int, BuraGame> BuraGames

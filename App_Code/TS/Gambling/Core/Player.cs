@@ -16,11 +16,21 @@ namespace TS.Gambling.Core
         public Player()
         {
             _events = new SortedDictionary<int, GameEvent>();
+            _lastPingTime = DateTime.Now;
         }
 
         private string _playerName;
         private int _clientId;
+        private decimal _balance;
+        private string _avatar;
+        private DateTime _lastPingTime;
         private SortedDictionary<int, GameEvent> _events;
+
+        public DateTime LastPingTime
+        {
+            get { return _lastPingTime; }
+            set { _lastPingTime = value; }
+        }
 
         public SortedDictionary<int, GameEvent> Events
         {
@@ -45,6 +55,17 @@ namespace TS.Gambling.Core
             set { _playerName = value; }
         }
 
+        public decimal Balance
+        {
+            get { return _balance; }
+            set { _balance = value; }
+        }
+
+        public string Avatar
+        {
+            get { return _avatar; }
+            set { _avatar = value; }
+        }
     }
 
 }

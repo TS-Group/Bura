@@ -20,6 +20,9 @@ namespace TS.Gambling.Bura
 
         public BuraGame(Player player, int playTill, double amount, bool longGameStyle, bool stickAllowed, bool passHiddenCards)
         {
+            // initilize game fields
+            KickedPlayers = new Dictionary<int, BuraPlayer>();
+
             Players[player.PlayerId] = player;
             Board = new BuraBoard();
             Board.Game = this;
@@ -100,7 +103,7 @@ namespace TS.Gambling.Bura
          * */
         public override void RejectDoubling(int rejectorPlayerId)
         {
-            EndGame(getOponentPlayer(rejectorPlayerId));
+            EndDeal(getOponentPlayer(rejectorPlayerId));
         }
 
         /*
@@ -151,9 +154,9 @@ namespace TS.Gambling.Bura
                     EndEvent(player.PlayerId, playerTurnEventId);
 
                 // check for BURA
-                if (Status == GameStatus.Finished)
+                if (Status == GameStatus.DealFinished)
                 {
-                    EndGame(LastCardTakerPlayer);
+                    EndDeal(LastCardTakerPlayer);
                     return true;
                 }
                 else
@@ -183,6 +186,8 @@ namespace TS.Gambling.Bura
                             // prepeare next deal
                             if (DealingCards.Count > 0 || nonEmptyCardCount > 0)
                             {
+                                AddPlayerEvent(player, EventType.TakeCards, LastCardTakerPlayer, IdGenerator.NextValue);
+                                AddPlayerEvent(oponent, EventType.TakeCards, LastCardTakerPlayer, IdGenerator.NextValue);
                                 AddPlayerEvent(LastCardTakerPlayer, EventType.ContinueQuestion, string.Empty);
                             }
                             else
@@ -231,7 +236,7 @@ namespace TS.Gambling.Bura
             if (isBuraCombination(cards))
             {
                 LastCardTakerPlayer = player;
-                Status = GameStatus.Finished;
+                Status = GameStatus.DealFinished;
                 return true;
             }
 
@@ -392,14 +397,20 @@ namespace TS.Gambling.Bura
                 int cardIndex = random.Next(0, _dealingCards.Count);
                 _dealingCards.Insert(cardIndex, card);
             }
+
+            // first/last card bug
+            Card lastCard = _dealingCards[_dealingCards.Count - 1];
+            _dealingCards.RemoveAt(_dealingCards.Count - 1);
+            int lastCardIndex = random.Next(0, _dealingCards.Count);
+            _dealingCards.Insert(lastCardIndex, lastCard);
         }
 
         /*
-         * End of game
+         * End of current Deal
          * */
-        public void EndGame(BuraPlayer winnerPlayer)
+        public void EndDeal(BuraPlayer winnerPlayer)
         {
-            Status = GameStatus.Finished;
+            Status = GameStatus.DealFinished;
 
             // clear all previous events, but ShowCard event
             foreach (int playerId in Players.Keys)
@@ -418,6 +429,8 @@ namespace TS.Gambling.Bura
                 BuraPlayer looserPlayer = getOponentPlayer(winnerPlayer.PlayerId);
                 AddPlayerEvent(winnerPlayer, EventType.TimeoutWin, "");
                 AddPlayerEvent(looserPlayer, EventType.TimeoutLoose, "");
+                // game is finished
+                EndGame(winnerPlayer);
             } 
             else if (winnerPlayer != null)
             {
@@ -429,9 +442,13 @@ namespace TS.Gambling.Bura
                 if (winnerPlayer.Score >= PlayingTill)
                 {
                     // game is finished
+                    EndGame(winnerPlayer);
+
+                    // offer rematch to players
                     int newGameId = IdGenerator.NextValue;
-                    AddPlayerEvent(winnerPlayer, EventType.WinAndRematchOffer, newGameId);
-                    AddPlayerEvent(looserPlayer, EventType.LooseAndRematchOffer, newGameId);
+                    string rematchInfo = string.Format("{0}:{1}", newGameId, winnerPlayer.PlayerId);
+                    AddPlayerEvent(winnerPlayer, EventType.WinAndRematchOffer, rematchInfo);
+                    AddPlayerEvent(looserPlayer, EventType.LooseAndRematchOffer, rematchInfo);
                 }
                 else
                 {
@@ -444,18 +461,97 @@ namespace TS.Gambling.Bura
             else
             {
                 // game has drawed
-                AddPlayerEvent(winnerPlayer, EventType.ContinueGame, LastCardTakerPlayer);
+                AddPlayerEvent(LastCardTakerPlayer, EventType.ContinueGame, LastCardTakerPlayer);
             }
         }
 
         /*
-         * Start of Game, is called when game starts
+         * Game finish event
+         * */
+        public void EndGame(BuraPlayer winner)
+        {
+            // change game status
+            Status = GameStatus.GameFinished;
+            
+            // give money to winner player
+            Entries entries = new Entries();
+            entries.EndGame(DBGameId, Players, winner.PlayerId, Amount);
+        }
+
+        /*
+         * player wants to join game
+         * */
+        public void JoinGame(BuraPlayer player)
+        {
+            if (Players.Count != 1)
+                throw new GamblingException("Game is filled");
+            Players[player.PlayerId] = player;
+            if (!IsRematch)
+                StartQuestion(player);
+            else
+            {
+                AcceptOponent();
+            }
+        }
+
+
+        /*
+         * Convert Gambling Exception to Error Event
+         * */
+        public void ProcessError(BuraPlayer player, GamblingException error)
+        {
+            AddPlayerEvent(player, EventType.Error, error.Info, -IdGenerator.NextValue);
+        }
+
+        /*
+         * Game start Question. Is called when oponent joins game.
+         * Game Creator must accept game start
+         * */
+        public void StartQuestion(BuraPlayer oponent)
+        {
+            BuraPlayer creatorPlayer = getOponentPlayer(oponent.PlayerId);
+            AddPlayerEvent(creatorPlayer, EventType.StartGameQuestion, oponent.PlayerName); 
+        }
+
+
+        /*
+         * Player has accepeted oponent, game is started
+         * */
+        public void AcceptOponent()
+        {
+            if (Players.Count != 2)
+                throw new GamblingException("Oponent has not joined");
+            if (Status != GameStatus.WaitingForOponent)
+                throw new GamblingException("Game is started");
+            Entries entries = new Entries();
+            entries.StartGame(DBGameId, Players, Amount);
+            StartGame();
+        }
+
+
+        /*
+         * Player has rejected oponent, game is not started
+         * */
+        public void RejectOponent(int playerId)
+        {
+            if (Players.Count != 2)
+                throw new GamblingException("Oponent has not joined");
+            if (Status != GameStatus.WaitingForOponent)
+                throw new GamblingException("Game is started");
+            BuraPlayer oponent = getOponentPlayer(playerId);
+            Players.Remove(oponent.PlayerId);
+            KickedPlayers[oponent.PlayerId] = oponent;
+            AddPlayerEvent(oponent, EventType.PlayerRejected, "", -IdGenerator.NextValue);
+        }
+
+        /*
+         * Start of Game, is called when game starts, or starts new Deal
          * StartGame Event Handler
          * */
         public void StartGame()
         {
             // check game status
-            if (Status != GameStatus.Finished && Status != GameStatus.WaitingForOponent)
+            if (Status != GameStatus.DealFinished && Status != GameStatus.WaitingForOponent)
                 return;
 
             // refresh all data
@@ -472,13 +568,22 @@ namespace TS.Gambling.Bura
                 {
                     player.PlayerCards.Add(LongGameStyle ? CardSet.LONG_BURA_CARDS["EmptyCard"] : CardSet.BURA_CARDS["EmptyCard"]);
                 }
+                /*
+                // send game start event
+                AddPlayerEvent(player, EventType.StartGame, "");
+                 * */
             }
 
             if (LastCardTakerPlayer == null)
             {
                 LastCardTakerPlayer = getPlayer(Players.Keys.First());
-                PreviousCardTakerPlayer = LastCardTakerPlayer;
             }
+            else
+            {
+                LastCardTakerPlayer = getPlayer(LastCardTakerPlayer.PlayerId);
+            }
+            PreviousCardTakerPlayer = LastCardTakerPlayer;
+            
             Status = GameStatus.Playing;
             DoublingOfferedBy = -1;
             RematchOffered = false;
@@ -585,6 +690,20 @@ namespace TS.Gambling.Bura
         }
 
         /*
+         * 
+         * Take Place cards before Continue Question
+         * */
+        public void TakeCards(int eventPlayerId, int eventId)
+        {
+            foreach (int playerId in Players.Keys)
+            {
+                BuraPlayer player = getPlayer(playerId);
+                player.PlacedCards.Clear();
+            }
+            EndEvent(eventPlayerId, eventId);
+        }
+
+        /*
          * Continues Games is called after Continue Question
          * Deals cards and prepares player turn
          * */
@@ -594,11 +713,13 @@ namespace TS.Gambling.Bura
             if (playerId != LastCardTakerPlayer.PlayerId)
                 return;
 
+            /* cards are removed on take cards end event
             // remove taken cards
             BuraPlayer takerPlayer = getPlayer(playerId);
             BuraPlayer oponent = getOponentPlayer(takerPlayer.PlayerId);
             takerPlayer.PlacedCards.Clear();
             oponent.PlacedCards.Clear();
+             * */
 
             // start new turn
             DealCards();
@@ -622,6 +743,10 @@ namespace TS.Gambling.Bura
             BuraPlayer oponent = getOponentPlayer(playerId);
             AddPlayerEvent(player, EventType.ShowCards, playerId);
             AddPlayerEvent(oponent, EventType.ShowCards, playerId);
+
+            // remove taken cards
+            player.PlacedCards.Clear();
+            oponent.PlacedCards.Clear();
 
             // calculate winner 
             BuraPlayer winnerPlayer = null;
@@ -647,14 +772,28 @@ namespace TS.Gambling.Bura
                 }
             }
 
-            EndGame(winnerPlayer);
+            EndDeal(winnerPlayer);
         }
 
 
         public void RematchOffer(int playerId, int eventId)
         {
-            int newGameId = int.Parse(getPlayer(playerId).Events[eventId].EventValue.ToString());
-            BuraGameController.CurrentInstanse.RematchGame(newGameId);
+            try
+            {
+                string rematchInfo = getPlayer(playerId).Events[eventId].EventValue.ToString();
+                string[] infos = rematchInfo.Split(":".ToCharArray());
+                int newGameId = int.Parse(infos[0]);
+                int winnerPlayerId = int.Parse(infos[1]);
+                BuraGameController.CurrentInstanse.RematchGame(newGameId, winnerPlayerId);
+            }
+            catch (GamblingException ex)
+            {
+                ProcessError(getPlayer(playerId), ex);
+            }
+            catch (Exception e)
+            {
+                ProcessError(getPlayer(playerId), new GamblingException(ErrorInfo.GLOBAL_ERROR));
+            }
         }
 
 
@@ -664,26 +803,54 @@ namespace TS.Gambling.Bura
          * */
         public void PlayerTimeout(int playerId)
         {
-            if (Status != GameStatus.Finished && Status != GameStatus.WaitingForOponent)
+            if (Status != GameStatus.GameFinished /*&& Status != GameStatus.WaitingForOponent*/)
             {
-                Status = GameStatus.Finished;
-                PlayerHasTimeouted = true;
-                BuraPlayer winnerPlayer = getOponentPlayer(playerId);
-                EndGame(winnerPlayer);
+                if (Status == GameStatus.WaitingForOponent)
+                {
+                    // Game creator not responds, oponent is rejected
+                    //Status = GameStatus.GameFinished;
+                    RejectOponent(playerId);
+                }
+                else
+                {
+                    PlayerHasTimeouted = true;
+                    Status = GameStatus.GameFinished;
+                    BuraPlayer winnerPlayer = getOponentPlayer(playerId);
+                    EndDeal(winnerPlayer);
+                }
             }
         }
 
-        public void LeaveGame(int playerId)
+        public void LeaveGame(Player player)
         {
-            throw new NotImplementedException();
+            if (player != null)
+                AddPlayerEvent(player, EventType.LeaveGame, "", -IdGenerator.NextValue);
+
+            // remove not started game from controller
+            if (Players.Count != 2)
+            {
+                //Status = GameStatus.GameFinished;
+                //BuraGameController.CurrentInstanse.RemoveGame(GameId);
+            }
         }
 
+
+        public void CreateGameStopMessage()
+        {
+            foreach (int playerId in Players.Keys)
+            {
+                BuraPlayer player = getPlayer(playerId);
+                AddPlayerEvent(player, EventType.StopGameMessage, "", -IdGenerator.NextValue);
+            }
+        }
 
         /*
          * Save Current Board into DB
          * */
         public override void SaveCurrentGameVersion(int currentVersionNumber)
         {
+            if (Status == GameStatus.WaitingForOponent)
+                return;
             GamblingModel.Entities entities = new GamblingModel.Entities();
             int histGameId = GameHistory.GameId;
             GamblingModel.BuraGameVersion buraGameVersion =
@@ -758,6 +925,14 @@ namespace TS.Gambling.Bura
         private bool _playerHasTimeouted;
         private GamblingModel.BuraGame _gameHistory;
         private int _dbGameId;
+        private Dictionary<int, BuraPlayer> _kickedPlayers;
+
+        public Dictionary<int, BuraPlayer> KickedPlayers
+        {
+            get { return _kickedPlayers; }
+            set { _kickedPlayers = value; }
+        }
+
 
         public int DBGameId
         {

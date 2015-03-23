@@ -12,6 +12,11 @@ public partial class Pages_Bura_Controller_ViewGame : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Request.UserHostAddress != "127.0.0.1")
+        {
+            Server.Transfer("~/Pages/Bura/BuraLobby.aspx");
+            return;
+        }
         if (Session[SessionKey.VIEW_BURA_GAME_ID] == null)
             return;
         if (! IsPostBack) {
@@ -20,8 +25,8 @@ public partial class Pages_Bura_Controller_ViewGame : System.Web.UI.Page
             var buraGame = (from c in entity.BuraGames where c.GameId == gameId select c).First();
             Session[SessionKey.VIEW_BURA_GAME] = buraGame;
             Session[SessionKey.VIEW_BURA_GAME_VERSION] = buraGame.BuraGameVersions.First().VersionNumber;
+            DrawGameView();
         }
-        DrawGameView();
     }
 
     protected void DrawGameView()
@@ -48,8 +53,10 @@ public partial class Pages_Bura_Controller_ViewGame : System.Web.UI.Page
                 .AppendFormat("PassHiddenCards: {0}<br />", buraGame.PassHiddenCards)
                 .AppendFormat("IsLongStyle: {0}<br />", buraGame.LongStyle)
                 .AppendFormat("DoublingValue: {0}<br />", gameVersion.DoublingValue);
+            /* !!!!!!!!!!
             if (gameVersion.DoublingOfferer != null)
                 gameInfo.AppendFormat("DoublingOfferer: {0}<br />", gameVersion.DoublingOfferer.PlayerName);
+            */
             PlaceHolderGameInfo.Controls.Clear();
             PlaceHolderGameInfo.Controls.Add(new LiteralControl(gameInfo.ToString()));
 
@@ -144,14 +151,17 @@ public partial class Pages_Bura_Controller_ViewGame : System.Web.UI.Page
     protected void ButtonGoto_Click(object sender, EventArgs e)
     {
         SetGameVersionNumber(int.Parse(TextBoxGotoVersion.Text));
+        DrawGameView();
     }
 
     protected void ButtonPrevVersion_Click(object sender, EventArgs e)
     {
         SetGameVersionNumber(GetCurrentVersion() - 1);
+        DrawGameView();
     }
     protected void ButtonNextVersion_Click(object sender, EventArgs e)
     {
         SetGameVersionNumber(GetCurrentVersion() + 1);
+        DrawGameView();
     }
 }

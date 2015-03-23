@@ -227,7 +227,13 @@ img
 }
 .check_label.active
 {
-    background: url('../Images/Lobby/check.png') left bottom no-repeat;    
+    background: url('../Images/Lobby/check.png') left bottom no-repeat;
+    text-decoration:none;
+}
+.error
+{
+    color:Red;
+    font-size: large;    
 }
 .checkbox
 {
@@ -244,7 +250,6 @@ img
     background: url('../Images/Lobby/radio.png') left top no-repeat;
     cursor: pointer;
     padding-bottom: 1px;
-    text-decoration:none;
 }
 .radio_label.active
 {
@@ -330,8 +335,6 @@ img
     background: url('../Images/Lobby/menu_hover.png');
 }
 
-
-
 .row1
 {
     font-size: 12px;
@@ -364,7 +367,7 @@ img
 .c_left_div
 {
     height: 391px;
-    background: url('../Images/Lobby/l1.png');
+    background: url('../Images/Lobby/l1.jpg');
 }
 .c_left_div_title
 {

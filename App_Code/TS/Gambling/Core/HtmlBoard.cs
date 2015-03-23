@@ -14,8 +14,8 @@ namespace TS.Gambling.Core
     public class HtmlBoard
     {
 
-        public const int CARD_HEIGHT = 111;
-        public const int CARD_WIDTH = 81;
+        public const int CARD_HEIGHT = 161;
+        public const int CARD_WIDTH = 120;
 
         public HtmlBoard()
         {
@@ -25,19 +25,19 @@ namespace TS.Gambling.Core
         {
             if (string.IsNullOrEmpty(imageName))
                 return string.Empty;
-            return string.Format("{0}{1}", VirtualPathUtility.ToAbsolute("~/Skins/NewDesign/Images/"), imageName);
+            return string.Format("{0}{1}", VirtualPathUtility.ToAbsolute("~/Skins/NewDesign2/Images/"), imageName);
         }
 
         protected string GetCardImage(Card card)
         {
             if (card == null)
                 return string.Empty;
-            return string.Format("{0}{1}.png", VirtualPathUtility.ToAbsolute("~/Skins/NewDesign/Images/Cards/"), card.Name);
+            return string.Format("{0}{1}.png", VirtualPathUtility.ToAbsolute("~/Skins/NewDesign2/Images/Cards/"), card.Name);
         }
 
         protected string GetHiddenCardImage()
         {
-            return string.Format("{0}Cover.png", VirtualPathUtility.ToAbsolute("~/Skins/NewDesign/Images/Cards/"));
+            return string.Format("{0}Cover.png", VirtualPathUtility.ToAbsolute("~/Skins/NewDesign2/Images/Cards/"));
         }
 
         private CardGame _game;

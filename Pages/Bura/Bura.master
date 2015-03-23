@@ -5,12 +5,7 @@
     </asp:ContentPlaceHolder>
 </asp:Content>
 <asp:Content ID="ContentBody" ContentPlaceHolderID="GamblingContentPlaceHolder" Runat="Server">
-    <b style="color:Maroon;">Bura Master</b>
-    <hr />
-
     <asp:ContentPlaceHolder id="BuraContentPlaceHolder" runat="server">
-        
     </asp:ContentPlaceHolder>
-
 </asp:Content>
 

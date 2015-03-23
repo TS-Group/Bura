@@ -12,7 +12,6 @@ namespace TS.Gambling.Core
         DealCards,
         AddCard,
         PlaceCard,
-        TakeCard,
         DoublingOffer,
         ContinueQuestion,
         PlayerTurn,
@@ -24,7 +23,14 @@ namespace TS.Gambling.Core
         LooseAndRematchOffer,
         WaitForOpponent,
         TimeoutWin,
-        TimeoutLoose
+        TimeoutLoose,
+        StartGameQuestion,
+        PlayerRejected,
+        TakeCards,
+        LeaveGame,
+        StopGameMessage,
+        StartGame,
+        Error
     }
 
     /// <summary>

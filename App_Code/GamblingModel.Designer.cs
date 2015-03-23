@@ -8,13 +8,12 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.ComponentModel;
-using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Linq;
-using System.Runtime.Serialization;
+using System.Data.EntityClient;
+using System.ComponentModel;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -22,10 +21,10 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraGameVersion_BuraGame", "BuraGame", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(GamblingModel.BuraGame), "BuraGameVersion", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraGameVersion), true)]
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraGameEvent_BuraGamePlayer", "BuraGamePlayer", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(GamblingModel.BuraGamePlayer), "BuraGameEvent", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraGameEvent), true)]
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraGamePlayer_BuraGame", "BuraGameVersion", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(GamblingModel.BuraGameVersion), "BuraGamePlayer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraGamePlayer), true)]
-[assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraGamePlayer_Player", "Player", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(GamblingModel.Player), "BuraGamePlayer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraGamePlayer), true)]
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraPlayerCard_GamePlayer", "BuraGamePlayer", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(GamblingModel.BuraGamePlayer), "BuraPlayerCard", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraPlayerCard), true)]
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraPlayerPlacedCard_Player", "BuraGamePlayer", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(GamblingModel.BuraGamePlayer), "BuraPlayerPlacedCard", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraPlayerPlacedCard), true)]
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraPlayerTakenCard_BuraGamePlayer", "BuraGamePlayer", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(GamblingModel.BuraGamePlayer), "BuraPlayerTakenCard", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraPlayerTakenCard), true)]
+[assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraGamePlayer_Player", "Player", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(GamblingModel.Player), "BuraGamePlayer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraGamePlayer), true)]
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraGameVersion_LastCardTakerPlayer", "Player", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(GamblingModel.Player), "BuraGameVersion", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraGameVersion), true)]
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraGameVersion_LastDoublingOffererPlayer", "Player", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(GamblingModel.Player), "BuraGameVersion", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraGameVersion), true)]
 [assembly: EdmRelationshipAttribute("GamblingModel", "FK_BuraGameVersion_PlayerTurn", "Player", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(GamblingModel.Player), "BuraGameVersion", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(GamblingModel.BuraGameVersion), true)]
@@ -210,7 +209,6 @@ namespace GamblingModel
         private ObjectSet<Player> _Players;
 
         #endregion
-
         #region AddTo Methods
     
         /// <summary>
@@ -278,11 +276,11 @@ namespace GamblingModel
         }
 
         #endregion
-
     }
+    
 
     #endregion
-
+    
     #region Entities
     
     /// <summary>
@@ -319,7 +317,6 @@ namespace GamblingModel
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -518,7 +515,6 @@ namespace GamblingModel
         partial void OnEndDateChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -545,7 +541,6 @@ namespace GamblingModel
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -578,7 +573,6 @@ namespace GamblingModel
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -729,7 +723,6 @@ namespace GamblingModel
         partial void OnIsEventPlayedChanged();
 
         #endregion
-
     
     }
     
@@ -763,7 +756,6 @@ namespace GamblingModel
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -890,7 +882,6 @@ namespace GamblingModel
         partial void OnPlayerScoreChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -912,44 +903,6 @@ namespace GamblingModel
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BuraGameEvent>("GamblingModel.FK_BuraGameEvent_BuraGamePlayer", "BuraGameEvent", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGamePlayer_Player", "Player")]
-        public Player Player
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Player>("GamblingModel.FK_BuraGamePlayer_Player", "Player").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Player>("GamblingModel.FK_BuraGamePlayer_Player", "Player").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Player> PlayerReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Player>("GamblingModel.FK_BuraGamePlayer_Player", "Player");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Player>("GamblingModel.FK_BuraGamePlayer_Player", "Player", value);
                 }
             }
         }
@@ -1019,9 +972,46 @@ namespace GamblingModel
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGamePlayer_Player", "Player")]
+        public Player Player
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Player>("GamblingModel.FK_BuraGamePlayer_Player", "Player").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Player>("GamblingModel.FK_BuraGamePlayer_Player", "Player").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Player> PlayerReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Player>("GamblingModel.FK_BuraGamePlayer_Player", "Player");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Player>("GamblingModel.FK_BuraGamePlayer_Player", "Player", value);
+                }
+            }
+        }
 
         #endregion
-
     }
     
     /// <summary>
@@ -1056,7 +1046,6 @@ namespace GamblingModel
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -1330,7 +1319,6 @@ namespace GamblingModel
         partial void OnDealingCardCountChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -1363,7 +1351,7 @@ namespace GamblingModel
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGameVersion_LastCardTakerPlayer", "Player")]
-        public Player LastCardTaker
+        public Player Player
         {
             get
             {
@@ -1379,7 +1367,7 @@ namespace GamblingModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Player> LastCardTakerReference
+        public EntityReference<Player> PlayerReference
         {
             get
             {
@@ -1401,7 +1389,7 @@ namespace GamblingModel
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGameVersion_LastDoublingOffererPlayer", "Player")]
-        public Player DoublingOfferer
+        public Player Player1
         {
             get
             {
@@ -1417,7 +1405,7 @@ namespace GamblingModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Player> DoublingOffererReference
+        public EntityReference<Player> Player1Reference
         {
             get
             {
@@ -1439,7 +1427,7 @@ namespace GamblingModel
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGameVersion_PlayerTurn", "Player")]
-        public Player CurrentTurn
+        public Player Player2
         {
             get
             {
@@ -1455,7 +1443,7 @@ namespace GamblingModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Player> CurrentTurnReference
+        public EntityReference<Player> Player2Reference
         {
             get
             {
@@ -1477,7 +1465,7 @@ namespace GamblingModel
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGameVersion_PreviousCardTakerPlayer", "Player")]
-        public Player PreviousCardTaker
+        public Player Player3
         {
             get
             {
@@ -1493,7 +1481,7 @@ namespace GamblingModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Player> PreviousCardTakerReference
+        public EntityReference<Player> Player3Reference
         {
             get
             {
@@ -1509,7 +1497,6 @@ namespace GamblingModel
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -1538,7 +1525,6 @@ namespace GamblingModel
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -1617,7 +1603,6 @@ namespace GamblingModel
         partial void OnCardNameChanged();
 
         #endregion
-
     
     }
     
@@ -1647,7 +1632,6 @@ namespace GamblingModel
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -1726,7 +1710,6 @@ namespace GamblingModel
         partial void OnCardNameChanged();
 
         #endregion
-
     
     }
     
@@ -1758,7 +1741,6 @@ namespace GamblingModel
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -1861,7 +1843,6 @@ namespace GamblingModel
         partial void OnCardValueChanged();
 
         #endregion
-
     
     }
     
@@ -1881,17 +1862,20 @@ namespace GamblingModel
         /// <param name="playerId">Initial value of the PlayerId property.</param>
         /// <param name="clientId">Initial value of the ClientId property.</param>
         /// <param name="playerName">Initial value of the PlayerName property.</param>
-        public static Player CreatePlayer(global::System.Int32 playerId, global::System.Int32 clientId, global::System.String playerName)
+        /// <param name="balance">Initial value of the Balance property.</param>
+        /// <param name="playerAvatar">Initial value of the PlayerAvatar property.</param>
+        public static Player CreatePlayer(global::System.Int32 playerId, global::System.Int32 clientId, global::System.String playerName, global::System.Decimal balance, global::System.String playerAvatar)
         {
             Player player = new Player();
             player.PlayerId = playerId;
             player.ClientId = clientId;
             player.PlayerName = playerName;
+            player.Balance = balance;
+            player.PlayerAvatar = playerAvatar;
             return player;
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -1972,33 +1956,168 @@ namespace GamblingModel
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Byte[] PlayerAvatar
+        public global::System.Decimal Balance
         {
             get
             {
-                return StructuralObject.GetValidValue(_PlayerAvatar);
+                return _Balance;
+            }
+            set
+            {
+                OnBalanceChanging(value);
+                ReportPropertyChanging("Balance");
+                _Balance = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Balance");
+                OnBalanceChanged();
+            }
+        }
+        private global::System.Decimal _Balance;
+        partial void OnBalanceChanging(global::System.Decimal value);
+        partial void OnBalanceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String PlayerAvatar
+        {
+            get
+            {
+                return _PlayerAvatar;
             }
             set
             {
                 OnPlayerAvatarChanging(value);
                 ReportPropertyChanging("PlayerAvatar");
-                _PlayerAvatar = StructuralObject.SetValidValue(value, true);
+                _PlayerAvatar = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("PlayerAvatar");
                 OnPlayerAvatarChanged();
             }
         }
-        private global::System.Byte[] _PlayerAvatar;
-        partial void OnPlayerAvatarChanging(global::System.Byte[] value);
+        private global::System.String _PlayerAvatar;
+        partial void OnPlayerAvatarChanging(global::System.String value);
         partial void OnPlayerAvatarChanged();
 
         #endregion
-
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGamePlayer_Player", "BuraGamePlayer")]
+        public EntityCollection<BuraGamePlayer> BuraGamePlayers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BuraGamePlayer>("GamblingModel.FK_BuraGamePlayer_Player", "BuraGamePlayer");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BuraGamePlayer>("GamblingModel.FK_BuraGamePlayer_Player", "BuraGamePlayer", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGameVersion_LastCardTakerPlayer", "BuraGameVersion")]
+        public EntityCollection<BuraGameVersion> BuraGameVersions
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BuraGameVersion>("GamblingModel.FK_BuraGameVersion_LastCardTakerPlayer", "BuraGameVersion");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BuraGameVersion>("GamblingModel.FK_BuraGameVersion_LastCardTakerPlayer", "BuraGameVersion", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGameVersion_LastDoublingOffererPlayer", "BuraGameVersion")]
+        public EntityCollection<BuraGameVersion> BuraGameVersions1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BuraGameVersion>("GamblingModel.FK_BuraGameVersion_LastDoublingOffererPlayer", "BuraGameVersion");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BuraGameVersion>("GamblingModel.FK_BuraGameVersion_LastDoublingOffererPlayer", "BuraGameVersion", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGameVersion_PlayerTurn", "BuraGameVersion")]
+        public EntityCollection<BuraGameVersion> BuraGameVersions2
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BuraGameVersion>("GamblingModel.FK_BuraGameVersion_PlayerTurn", "BuraGameVersion");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BuraGameVersion>("GamblingModel.FK_BuraGameVersion_PlayerTurn", "BuraGameVersion", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("GamblingModel", "FK_BuraGameVersion_PreviousCardTakerPlayer", "BuraGameVersion")]
+        public EntityCollection<BuraGameVersion> BuraGameVersions3
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BuraGameVersion>("GamblingModel.FK_BuraGameVersion_PreviousCardTakerPlayer", "BuraGameVersion");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BuraGameVersion>("GamblingModel.FK_BuraGameVersion_PreviousCardTakerPlayer", "BuraGameVersion", value);
+                }
+            }
+        }
+
+        #endregion
     }
 
     #endregion
-
     
 }

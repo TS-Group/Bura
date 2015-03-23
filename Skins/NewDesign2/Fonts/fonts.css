@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'BPGNinoMtavruliBold';
+    src: url('bpg-nino-mtavruli-bold/bpg_nino_mtavruli_bold-webfont.eot');
+    src: url('bpg-nino-mtavruli-bold/bpg_nino_mtavruli_bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('bpg-nino-mtavruli-bold/bpg_nino_mtavruli_bold-webfont.woff') format('woff'),
+         url('bpg-nino-mtavruli-bold/bpg_nino_mtavruli_bold-webfont.ttf') format('truetype'),
+         url('bpg-nino-mtavruli-bold/bpg_nino_mtavruli_bold-webfont.svg#BPGNinoMtavruliBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+.BPGNinoMtavruliBold { font-family:BPGNinoMtavruliBold, Sylfaen, Arial; }
+
+@font-face {
+    font-family: 'BPGNinoMtavruliRegular';
+    src: url('bpg-nino-mtavruli-regular/bpg_nino_mtavruli_normal-webfont.eot');
+    src: url('bpg-nino-mtavruli-regular/bpg_nino_mtavruli_normal-webfont.eot?#iefix') format('embedded-opentype'),
+         url('bpg-nino-mtavruli-regular/bpg_nino_mtavruli_normal-webfont.woff') format('woff'),
+         url('bpg-nino-mtavruli-regular/bpg_nino_mtavruli_normal-webfont.ttf') format('truetype'),
+         url('bpg-nino-mtavruli-regular/bpg_nino_mtavruli_normal-webfont.svg#BPGNinoMtavruliRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+.BPGNinoMtavruliRegular { font-family:BPGNinoMtavruliRegular, Sylfaen, Arial; }
+
+/*@font-face {
+    font-family: 'BPGSquareMtavruliRegular';
+    src: url('bpg-square-mtavruli-regular/bpg_square_mtavruli_2009-webfont.eot');
+    src: url('bpg-square-mtavruli-regular/bpg_square_mtavruli_2009-webfont.eot?#iefix') format('embedded-opentype'),
+         url('bpg-square-mtavruli-regular/bpg_square_mtavruli_2009-webfont.woff') format('woff'),
+         url('bpg-square-mtavruli-regular/bpg_square_mtavruli_2009-webfont.ttf') format('truetype'),
+         url('bpg-square-mtavruli-regular/bpg_square_mtavruli_2009-webfont.svg#BPGSquareMtavruliRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+.BPGSquareMtavruliRegular { font-family:BPGSquareMtavruliRegular, Sylfaen, Arial; }*/
+
+@font-face {
+    font-family: 'BPGGlahoArialSPV5Regular';
+    src: url('bpg-glaho-arial-sp-v5/bpg_glaho_arial_sp_v5-webfont.eot');
+    src: url('bpg-glaho-arial-sp-v5/bpg_glaho_arial_sp_v5-webfont.eot?#iefix') format('embedded-opentype'),
+         url('bpg-glaho-arial-sp-v5/bpg_glaho_arial_sp_v5-webfont.woff') format('woff'),
+         url('bpg-glaho-arial-sp-v5/bpg_glaho_arial_sp_v5-webfont.ttf') format('truetype'),
+         url('bpg-glaho-arial-sp-v5/bpg_glaho_arial_sp_v5-webfont.svg#BPGGlahoArialSPV5Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+.BPGGlahoArialSPV5Regular { font-family:BPGGlahoArialSPV5Regular, Sylfaen, Arial; }
+
+
+
+@font-face {
+    font-family: 'BPGIngiriArial2008Regular';
+    src: url('bpg-ingiri-arial-2008/bpg_ingiri_arial_0-webfont.eot');
+    src: url('bpg-ingiri-arial-2008/bpg_ingiri_arial_0-webfont.eot?#iefix') format('embedded-opentype'),
+         url('bpg-ingiri-arial-2008/bpg_ingiri_arial_0-webfont.woff') format('woff'),
+         url('bpg-ingiri-arial-2008/bpg_ingiri_arial_0-webfont.ttf') format('truetype'),
+         url('bpg-ingiri-arial-2008/bpg_ingiri_arial_0-webfont.svg#BPGIngiriArial2008Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+.BPGIngiriArial2008Regular { font-family:BPGIngiriArial2008Regular,Sylfaen, Arial; } 

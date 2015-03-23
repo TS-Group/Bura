@@ -15,18 +15,23 @@
 
     private void Page_Load(object sender, System.EventArgs e)
     {
+        /*
         int gameId = int.Parse(Request["gameId"].ToString());
         int playerId = int.Parse(Request["playerId"].ToString());
         BuraGame game = BuraGameController.CurrentInstanse.GetGame(gameId);
         
         if (game != null && game.getPlayer(playerId) != null)
         {
-            byte[] b = game.getPlayer(playerId).Avatar;
-            Response.Clear();
-            Response.ContentType = "image/png";
-            Response.BinaryWrite(b);
-            Response.Flush();
+            if (game.getPlayer(playerId).Avatar != null)
+            {
+                byte[] b = game.getPlayer(playerId).Avatar;
+                Response.Clear();
+                Response.ContentType = "image/png";
+                Response.BinaryWrite(b);
+                Response.Flush();
+            }
         }
+         */
     }
  
 </script>

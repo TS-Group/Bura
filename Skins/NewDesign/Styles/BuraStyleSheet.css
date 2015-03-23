@@ -1,9 +1,19 @@
-﻿body 
+﻿@font-face {
+    font-family: 'sanet';
+    src: url('../../../Common/Fonts/sanet.ttf');
+}
+
+body 
 {
     /*background: url("../Images/Common/Background.jpg") no-repeat scroll center top #000000;*/
     background-color: #143019;
     font-family: Sans-serif;
     text-align: center;    
+}
+
+.GamblingBoard
+{
+    background:url("../Images/Common/BoardBG.png") repeat scroll 0 0 transparent !important;
 }
 
 form 
@@ -157,7 +167,10 @@ form
     top:450px;
     left:800px;
     height: 76px;
-    width: 159px;    
+    width: 159px;
+    font-family: 'sanet';
+    color:#97caa1;
+    text-align:center;
 }
 
 .PlayerTimer.Top div.ElapsedContent 
@@ -251,6 +264,7 @@ form
     left: 773px;
     width: 198px;
     height: 59px;
+    font-family: 'sanet';
 }
 
 .GameInfoDetail font {
@@ -283,16 +297,18 @@ form
     left: 260px;
     position: absolute;
     text-align: center;
-    width: 467px;    
+    width: 467px;
+    font-family: 'sanet';
 }
 
 .MessageBox .Text
 {
     color: #ff0101;
-    font-weight: bold;
+    /*font-weight: bold;*/
+    font-size:13pt;
     position: absolute;
     text-align: center;
-    top: -2px;
+    top: 2px;
     width: 467px;
 }
 
@@ -313,31 +329,47 @@ form
 .Option .Left 
 {
     float: left;
-    /*width: 9px;*/
+    width: 9px;
+    background-image: url("../Images/Buttons/MessageOptionLeft.png");
+    margin-top:29px;
+    height:23px;
 }
 
 .Option .Middle
 {
-    /*background-repeat: repeat-x;*/
-    background: url("../Images/Common/MessageOption.png") no-repeat scroll center center transparent;
+    background-repeat: repeat-x;
+    background-image: url("../Images/Buttons/MessageOptionBody.png");
     color: #8bc485;
     float: left;
     font-size: 14px;
-    margin-top:23px;
-    height:28px;
-    width:121px;
-}
-
-.Option .Middle:hover 
-{
-    background: url("../Images/Common/MessageOptionHover.png") no-repeat scroll center center transparent;
-    color: #e6e6e6;
+    margin-top:29px;
+    height:23px;
+    padding-top:3px;
 }
 
 .Option .Right
 {
+    background-image: url("../Images/Buttons/MessageOptionRight.png");
     float: left;
-    /*width: 9px;*/
+    width: 9px;
+    margin-top:29px;
+    height:23px;
+}
+
+.Option:hover .Left
+{
+    background-image: url("../Images/Buttons/MessageOptionHoverLeft.png");
+}
+
+.Option:hover .Middle 
+{
+    background-image: url("../Images/Buttons/MessageOptionHoverBody.png");
+    color: #e6e6e6;
+}
+
+.Option:hover .Right
+{
+    background-image: url("../Images/Buttons/MessageOptionHoverRight.png");
 }
 
 /*
@@ -405,4 +437,42 @@ form
 .ShowCards span span
 {
     margin-left: -60px;
+}
+
+
+.popup_div
+{
+    width: 395px;
+    height: 271px;
+    background: url('../Images/common/popup.png');
+    position: relative;
+}
+
+.popup_bt
+{
+    left: 137px;
+    bottom: 37px;
+    border: none;
+    cursor: pointer;
+    width: 122px;
+    height: 28px;
+    line-height: 28px;
+    background: url('../Images/Lobby/popup_bt.png');
+    font-size: 12px;
+    color: #FFF;
+    font-weight: bold;
+    display:inline-block;
+}
+
+.popup_div #popupButtons
+{
+    height:40px;
+}
+
+.popup_div #messageText
+{
+    height:200px;
+    margin-top:10px;
+    padding-left:8px;
+    padding-right:8px;
 }

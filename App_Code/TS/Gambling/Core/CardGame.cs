@@ -11,7 +11,8 @@ namespace TS.Gambling.Core
     {
         WaitingForOponent = 0,
         Playing,
-        Finished
+        DealFinished,
+        GameFinished
     }
 
 
@@ -24,6 +25,7 @@ namespace TS.Gambling.Core
         {
             _players = new Dictionary<int, Player>();
             _doubling = GameDoubling.Items[0];
+            _startTime = DateTime.Now;
         }
 
 
@@ -41,6 +43,11 @@ namespace TS.Gambling.Core
             gameEvent.ViewerPlayerId = player.PlayerId;
             gameEvent.EventValue = eventValue;
             gameEvent.EventDate = DateTime.Now;
+            if (gameEvent.Type == EventType.StartGameQuestion)
+            {
+                // TEMP !! TO DO ...
+                gameEvent.EventDate = new DateTime(DateTime.Now.Ticks - TimeSpan.TicksPerSecond * 50);
+            }
             player.Events[gameEvent.EventId] = gameEvent;
 
             // all events which were played has to be replayed
@@ -55,6 +62,15 @@ namespace TS.Gambling.Core
         {
             int eventId = IdGenerator.NextValue; ;
             AddPlayerEvent(player, type, eventValue, eventId);
+        }
+
+        /*
+         * Ping player, if ping not called during some time, player will be disconected from game
+         * */
+        public void Ping(Player player)
+        {
+            if (player != null)
+                player.LastPingTime = DateTime.Now;
         }
 
         /*
@@ -123,6 +139,13 @@ namespace TS.Gambling.Core
         private int _gameId;
         private GameStatus _status;
         private bool _isRematch;
+        private DateTime _startTime;
+
+        public DateTime StartTime
+        {
+            get { return _startTime; }
+            set { _startTime = value; }
+        }
 
         public bool IsRematch
         {

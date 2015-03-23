@@ -164,6 +164,7 @@ form
     right: 114px;
     text-align: center;
     width: 198px;
+    font-family: 'sanet';
 }
 
 .GameInfo font {
@@ -197,7 +198,8 @@ form
     padding-top: 40px;
     position: absolute;
     text-align: center;
-    width: 389px;    
+    width: 389px;
+    font-family: 'sanet';
 }
 
 .MessageBox .Text

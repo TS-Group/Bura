@@ -1,0 +1,621 @@
+﻿@font-face {
+    font-family: BPGNinoMtavruliBold,Sylfaen,Arial;
+    src: url('../Fonts/BPG Ingiri Arial 2008.ttf');
+}
+
+body 
+{
+    background-color:Black;
+    font-family: Sans-serif;
+    text-align: center;    
+}
+
+.GamblingBoard
+{
+    
+}
+
+form 
+{
+    margin:0;
+}
+
+.Board
+{
+    background:url("../Images/Common/Board.jpg") no-repeat !important;
+    height: 900px;
+    margin: 0 auto;
+    position: relative;
+    text-align: left;
+    width: 1200px;    
+    z-index:0;
+}
+
+.BuraLogo
+{
+}
+
+.Table 
+{
+    background: url("../Images/Common/BoardBG.png") no-repeat scroll center top transparent;
+    height: 900px;
+    position: absolute;
+    top: 110px;
+    width: 1200px;
+    display:none;
+}
+
+.PlayerNameHolder.Top
+{
+    display:none;
+    background-image:url("../Images/Common/TopPlayerNameHolder.png");
+    left:350px;
+    top:0px;
+    height:23px;
+    width:346px;
+    position:absolute;
+    margin-top:-4px;
+}
+
+.PlayerNameHolder.Bottom
+{
+    display:none;
+}
+
+.CardArea 
+{
+    display:none;
+}
+
+.Card 
+{
+    cursor:pointer;
+}
+
+.CardArea.Top
+{
+    background-image:url("../Images/Common/TopPlayerArea.png");
+    left:240px;
+    top:50px;
+    height:143px;
+    width:522px;
+    position:absolute;
+}
+
+.CardArea.Bottom
+{
+    background-image:url("../Images/Common/BottomPlayerArea.png");
+    left:240px;
+    top:485px;
+    height:143px;
+    width:522px;
+    position:absolute;
+}
+
+.CardArea.Center
+{
+    background-image:url("../Images/Common/CardsArea.png");
+    left:240px;
+    top:205px;
+    height:261px;
+    width:522px;
+    position:absolute;
+}
+
+.PlayerScore
+{
+    float: left;
+    height: 40px;
+    padding-top: 6px;
+    text-align: center;
+    width: 40px;    
+    font-weight:bold;
+    position: absolute;
+    z-index:1;
+    color: #FFFFFF;
+    font-size: 22px;
+    text-shadow: 0 1px 0 #000000;
+    background: url("../Images/Common/PlayerScoreWin.png") no-repeat scroll center top transparent;
+}
+
+.PlayerScore.Win 
+{
+    background: url("../Images/Common/PlayerScoreWin.png") no-repeat scroll center top transparent;
+}
+
+.PlayerScore.Draw 
+{
+    background: url("../Images/Common/PlayerScoreDraw.png") no-repeat scroll center top transparent;
+}
+
+.PlayerScore.Loose
+{
+    background: url("../Images/Common/PlayerScoreLoose.png") no-repeat scroll center top transparent;
+}
+
+.PlayerScore.Top
+{
+    left: 300px;
+    top: 185px;
+}
+
+.PlayerScore.Bottom
+{
+    top: 605px;
+    left: 300px;
+}
+
+.PlayerTimer
+{
+    background: url("../Images/Common/sprite.png") no-repeat scroll 0 -307px transparent;
+    display: block;
+    height: 22px;
+    padding-top: 2px;
+    width: 410px;    
+    position: absolute;
+    z-index:2;
+}
+
+.PlayerTimer.Empty 
+{
+    background: url("../Images/Common/sprite.png") no-repeat scroll 0 -267px transparent;
+    z-index:1;
+}
+
+.PlayerTimer div.RemainingContent
+{
+    background-image: url("../Images/Common/loader_bg.jpg");
+    border-radius: 10px 10px 10px 10px;
+    float: left;
+    height: 14px;
+    margin-left: 2px;
+    width: 407px;
+    display: table-cell;
+}
+
+.PlayerTimer.Top 
+{
+    left: 394px;
+    top: 80px;
+}
+
+.PlayerTimer.Bottom
+{
+    left: 394px;
+    top: 765px;
+}
+
+
+.GameInfo
+{
+    /*background: url("../Images/Common/GameInfo.png") no-repeat scroll center top transparent;*/
+    position: absolute;
+    top:660px;
+    left:990px;
+    height: 80px;
+    width: 159px;
+    font-family: BPGNinoMtavruliBold,Sylfaen,Arial;
+    color:#d4d4d4;
+    text-align:center;
+}
+
+.PlayerTimer.Top div.ElapsedContent 
+{
+    height:50px;
+}
+
+.PlacedCard, .PlacedHiddenCard, .HiddenPlacedCard
+{
+    display:inline;
+}
+
+.PlaceCardScript
+{
+    display:none;
+}
+
+.ButtonsDiv a
+{
+    display:inline-block;
+    background-color:Black;
+    color:White;
+    font-weight:bold;
+    cursor:pointer;
+    margin:4px;
+    padding:4px;
+    font-size:10px;
+}
+
+.PlayerAvatar 
+{
+    border-radius: 5px 5px 5px 5px;
+    float: left;    
+    background: url("../Images/Common/PlayerAvatar.png") repeat scroll 0 0 transparent;
+    height: 76px;
+    position: absolute;
+    width: 76px;
+}
+
+.PlayerAvatar.Top {
+    left: 235px;
+    top: 165px;
+}
+
+.PlayerAvatar.Bottom {
+    top: 590px;
+    left: 235px;
+}
+
+.PlayerName {
+    color: #c4f6b1;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    width:100px;
+    height:20px;
+    vertical-align:top;
+}
+
+.PlayerName.Top
+{
+    position:absolute;
+    left: 223px;
+    top: 245px;
+    margin-top:-2px;
+}
+
+.PlayerName.Bottom
+{
+    position:absolute;
+    left: 223px;
+    top: 666px;
+    margin-top: 2px;
+}
+
+.PlayerAvatar .Avatar {
+    height: 70px;
+    width: 70px;
+    margin:3px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.Clearer {
+    clear: both;
+}
+
+.GameInfoDetail
+{
+    /*background: url("../Images/Common/GameInfoDetail.png") no-repeat left top transparent;*/
+    color: #b0e0ac;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 15px;
+    padding-top: 2px;
+    padding-left:26px;
+    text-align: left;
+    position: absolute;
+    top: 830px;
+    left: 900px;
+    width: 198px;
+    height: 59px;
+    font-family: BPGNinoMtavruliBold,Sylfaen,Arial;
+}
+
+.GameInfoDetail font {
+    color: #BABABA;
+}
+
+.DoublingInfo
+{
+    /*background: url("../Images/Common/DoublingBG.png") no-repeat scroll center top transparent;*/
+    bottom: 0;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    height: 40px;
+    padding-top: 12px;
+    position: absolute;
+    right: 114px;
+    text-align: center;
+    width: 197px;
+}
+
+/* Bura Message Styles */
+.MessageBox 
+{
+    /*background: url("../Images/Common/MessageBox.png") no-repeat scroll center top transparent;*/
+    top: 800px;
+    height: 90px;
+    left: 350px;
+    position: absolute;
+    text-align: center;
+    width: 467px;
+    font-family: BPGNinoMtavruliBold,Sylfaen,Arial;
+}
+
+.MessageBox .Text
+{
+    color: #ff0101;
+    /*font-weight: bold;*/
+    font-size:13pt;
+    position: absolute;
+    text-align: center;
+    top: 4px;
+    width: 467px;
+}
+
+.MessageOptions .Option
+{
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    margin-top:40px;
+    height:50px;
+    padding-left:20px;
+    padding-right:20px;
+    background-image:url('../Images/Common/MessageOption.png');
+    background-size:100% 50px;
+    background-repeat:no-repeat;
+    color: #8bc485;
+    padding-top:15px;
+}
+
+.MessageOptions .Option:hover
+{
+    cursor: pointer;
+    display: inline-block;
+    background-image:url('../Images/Common/MessageOptionHover.png');
+    background-size:100% 50px;
+    background-repeat:no-repeat;
+    color: #e6e6e6;
+}
+
+.Option .Left 
+{
+    /*
+    float: left;
+    width: 18px;
+    background-image: url("../Images/Buttons/MessageOptionLeft.png");
+    background-repeat:no-repeat;
+    background-position:left;
+    margin-top:40px;
+    height:50px;*/
+}
+
+.Option .Middle
+{
+    /*
+    background-repeat: repeat-x;
+    background-image: url("../Images/Buttons/MessageOptionBody.png");
+    color: #8bc485;
+    float: left;
+    font-size: 14px;
+    margin-top:40px;
+    height:50px;
+    padding-top:15px;
+    padding-left:2px;
+    padding-right:4px;
+   */
+}
+
+.Option .Right
+{
+    /*
+    background-image: url("../Images/Buttons/MessageOptionRight.png");
+    background-repeat:no-repeat;
+    background-position:right;
+    float: left;
+    width: 18px;
+    margin-top:40px;
+    height:50px;
+  */
+}
+
+.Option:hover .Left
+{
+    /*background-image: url("../Images/Buttons/MessageOptionHoverLeft.png");*/
+}
+
+.Option:hover .Middle 
+{
+    /*background-image: url("../Images/Buttons/MessageOptionHoverBody.png");
+    color: #e6e6e6;*/
+}
+
+.Option:hover .Right
+{
+    /*background-image: url("../Images/Buttons/MessageOptionHoverRight.png");*/
+}
+
+/*
+.Option.Red .Left 
+{
+    background: url("../Images/Buttons/red_left.png") no-repeat scroll center top transparent;    
+}
+
+.Option.Red:hover .Left 
+{
+    background: url("../Images/Buttons/red_left_active.png") no-repeat scroll center top transparent;
+}
+
+.Option.Red .Middle
+{
+    background-image: url("../Images/Buttons/red_middle.png");
+}
+
+.Option.Red:hover .Middle
+{
+    background-image: url("../Images/Buttons/red_middle_active.png");
+}
+
+.Option.Red .Right 
+{
+    background: url("../Images/Buttons/red_right.png") no-repeat scroll center top transparent;    
+}
+
+.Option.Red:hover .Right 
+{
+    background: url("../Images/Buttons/red_right_active.png") no-repeat scroll center top transparent;
+}
+*/
+
+.BuraMessageContent div
+{
+    background-color:White;
+    padding:16px;
+    font-weight:bold;
+    margin:auto;
+}
+
+.MessageOptions
+{
+    margin:auto;
+}
+
+.MessageOptions a
+{
+    background-color:green;
+    padding:4px;
+    font-weight:bold;
+    margin:8px;
+    border: 1px solid red;
+    cursor:pointer;
+}
+
+
+
+.ShowCards span 
+{
+    margin-left: 100px;
+}
+
+.ShowCards span span
+{
+    margin-left: -70px;
+}
+
+
+.popup_div
+{
+    width: 395px;
+    height: 271px;
+    background: url('../Images/common/popup.png');
+    position: relative;
+}
+
+.popup_bt
+{
+    left: 137px;
+    bottom: 37px;
+    border: none;
+    cursor: pointer;
+    width: 122px;
+    height: 28px;
+    line-height: 28px;
+    background: url('../Images/Lobby/popup_bt.png');
+    font-size: 12px;
+    color: #FFF;
+    font-weight: bold;
+    display:inline-block;
+}
+
+.popup_div #popupButtons
+{
+    height:40px;
+}
+
+.popup_div #messageText
+{
+    height:200px;
+    margin-top:10px;
+    padding-left:8px;
+    padding-right:8px;
+}
+
+
+.win { width: 363px; min-height:249px; margin-left:auto; margin-right:auto; margin-top:300px!important;}
+.winContent { width:340px; height:249px; background:url("../images/lobby/win_content.png") no-repeat; overflow:hidden; }
+.winContentAvatar { width:340px; height:413px; background:url("../images/lobby/win_avatar.png") no-repeat; overflow:hidden; }
+.winContent h2 { padding:0px 0px 0px 20px; }
+.winContentAvatar h2 { padding:0px 0px 0px 20px; }
+.winClose { position:absolute; top:0px; right:0px; width:27px; height:27px; overflow:hidden; background:url("../images/lobby/close_win.png") no-repeat; }
+.winClose:hover { text-decoration:none !important; }
+.winContent2 { width:340px; height:240px; background:url("../images/lobby/pp3.png") no-repeat; overflow:hidden; }
+
+h1, h2, h3, h4, h5, h6 {
+    color: #C3DFFF;
+    font-family: BPGNinoMtavruliBold,Sylfaen,Arial;
+    font-weight: normal;
+    line-height: normal;
+    margin-left:4px;
+    margin-right:4px;
+}
+
+.submit { 
+	display:inline-block; 
+	width:96px;
+	height:28px;
+	line-height:28px;
+	background:url("../images/lobby/button.png");
+	color:#fff;
+	border:none;
+	font-family:Sylfaen, Arial, Verdana;
+	zoom:1;
+	cursor:pointer;
+}
+
+.soundOn
+{
+    background: url("../Images/Common/sprite.png") no-repeat scroll -130px -14px transparent;
+    display: block;
+    height: 26px;
+    margin-top: 9px;
+    width: 26px;
+    position:absolute;
+    left:1080px;
+    top:20px;
+    cursor:pointer;
+}
+
+.soundOn:hover
+{
+    background: url("../Images/Common/sprite.png") no-repeat scroll -130px -54px transparent;
+}
+
+.soundOff
+{
+    background: url("../Images/Common/sprite.png") no-repeat scroll -234px -14px transparent;
+    display: block;
+    height: 26px;
+    margin-top: 9px;
+    width: 26px;
+    position:absolute;
+    left:1080px;
+    top:20px;
+    cursor:pointer;
+}
+
+.soundOff:hover
+{
+    background: url("../Images/Common/sprite.png") no-repeat scroll -234px -54px transparent;
+}
+
+.iconExit 
+{
+    background: url("../Images/Common/sprite.png") no-repeat scroll -183px -14px transparent;
+    display: block;
+    height: 26px;
+    margin-top: 9px;
+    width: 26px;
+    position:absolute;
+    left:1120px;
+    top:20px;
+    cursor:pointer;
+}
+
+.iconExit:hover
+{
+    background: url("../Images/Common/sprite.png") no-repeat scroll -183px -54px transparent;
+}

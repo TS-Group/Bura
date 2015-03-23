@@ -48,14 +48,19 @@ namespace TS.Gambling.Schedulers
         {
             long currentTicks = DateTime.Now.Ticks;
             Dictionary<int, BuraGame> games = BuraGameController.CurrentInstanse.BuraGames;
-            foreach (int gameId in games.Keys)
+            List<int> gameIds = games.Keys.ToList();
+            foreach (int gameId in gameIds)
             {
+                if (!games.ContainsKey(gameId))
+                    continue;
                 try
                 {
+                    if (games[gameId].Players == null || games[gameId].Players.Count == 0)
+                        continue;
                     foreach (int playerId in games[gameId].Players.Keys)
                     {
                         BuraPlayer player = (BuraPlayer)games[gameId].Players[playerId];
-                        if (player.Events.Count > 0)
+                        if (player.Events != null && player.Events.Count > 0)
                         {
                             if (player.Events.First().Value.EventDate.Ticks + GameEvent.EVENT_TIME * TimeSpan.TicksPerSecond < currentTicks
                                 && player.Events.First().Value.Type != EventType.WaitForOpponent)

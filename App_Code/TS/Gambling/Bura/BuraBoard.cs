@@ -16,22 +16,25 @@ namespace TS.Gambling.Bura
     {
 
         protected HtmlArea[] playerAreas = new HtmlArea[] {
-            new HtmlArea(480, 250, 500, 130),
-            new HtmlArea(20, 250, 500, 130),
+            new HtmlArea(580, 395, 500, 180),
+            new HtmlArea(90, 395, 500, 180),
         };
         protected HtmlArea[] placedCardsAreas = new HtmlArea[] {
-            new HtmlArea(300, 250, 500, 120),
-            new HtmlArea(230, 250, 500, 120),
+            new HtmlArea(365, 250, 700, 160),
+            new HtmlArea(305, 250, 700, 160),
         };
         protected HtmlArea[] takenCardsAreas = new HtmlArea[] {
-            new HtmlArea(380, 70, 120, 120),
-            new HtmlArea(120, 70, 120, 120),
+            new HtmlArea(500, 30, 120, 160),
+            new HtmlArea(160, 30, 120, 160),
         };
 
-        protected HtmlArea trumpArea = new HtmlArea(280, 810, 120, 120);
+        protected HtmlArea trumpArea = new HtmlArea(340, 990, 165, 165);
         protected HtmlArea buttonsArea = new HtmlArea(450, 650, 100, 100);
-        protected HtmlArea showCardsArea = new HtmlArea(280, 250, 600, 111);
+        protected HtmlArea showCardsArea = new HtmlArea(280, 300, 600, 161);
         protected HtmlArea eventsArea = new HtmlArea(50, 50, 200, 200);
+        protected const int TIMER_LENGTH = 407;
+        protected const int SHORT_BURA_CARDS_DELTA = 140;
+        protected const int LONG_BURA_CARDS_DELTA = 72;
 
         public BuraBoard()
         {
@@ -45,14 +48,14 @@ namespace TS.Gambling.Bura
             // draw player cards
             foreach (int localPlayerId in Game.Players.Keys)
             {
-                BuraPlayer player = getBuraGame().getPlayer(localPlayerId);
+                BuraPlayer localPlayer = getBuraGame().getPlayer(localPlayerId);
                 bool isMainPlayer = (localPlayerId == playerId);
                 int index = isMainPlayer ? 0 : 1;
-                GeneratePlayerCards(response, player, player.PlayerCards, playerAreas[index], isMainPlayer);
-                GeneratePlacedCards(response, player, player.PlacedCards, placedCardsAreas[index], isMainPlayer);
-                if (player.Events.Count > 0)
+                GeneratePlayerCards(response, localPlayer, localPlayer.PlayerCards, playerAreas[index], isMainPlayer);
+                GeneratePlacedCards(response, localPlayer, localPlayer.PlacedCards, placedCardsAreas[index], isMainPlayer);
+                if (localPlayer.Events.Count > 0)
                 {
-                    GenerateTimerScript(response, localPlayerId, player.Events.First().Value);
+                    GenerateTimerScript(response, localPlayerId, localPlayer.Events.First().Value);
                 }
                 index++;
             }
@@ -61,43 +64,66 @@ namespace TS.Gambling.Bura
             GenerateTrumpCard(response, ((BuraGame)Game).Trump);
 
             // add event scripts for player
-            if (Game.Players[playerId].Events != null && Game.Players[playerId].Events.Count > 0)
+            if (Game.Players.ContainsKey(playerId))
             {
-                GameEvent gameEvent = Game.Players[playerId].Events.First().Value;
-                switch (gameEvent.Type)
+                Player player = Game.Players[playerId];
+                if (player.Events != null && player.Events.Count > 0)
                 {
-                    case EventType.DealCards: GenerateDealScript(response, playerId, gameEvent); break;
-                    case EventType.PlaceCard: GeneratePlaceCardScript(response, playerId, gameEvent); break;
-                    case EventType.DoublingOffer: GenerateDoublingOfferScript(response, gameEvent); break;
-                    case EventType.ContinueQuestion: GenerateContinueQuestionEventScript(response, gameEvent); break;
-                    case EventType.ShowCards: GenerateShowCardsEventScript(response, gameEvent); break;
-                    case EventType.PlayerTurn: GeneratePlayerTurnScript(response, gameEvent); break;
-                    case EventType.WinDeal: GeneratePlayerWinScript(response, gameEvent); break;
-                    case EventType.LooseDeal: GeneratePlayerLooseScript(response, gameEvent); break;
-                    case EventType.WinAndRematchOffer: GenerateWinAndRematchScript(response, gameEvent); break;
-                    case EventType.LooseAndRematchOffer: GenerateLooseAndRematchScript(response, gameEvent); break;
-                    case EventType.ContinueGame: GenerateContinueGameScript(response, gameEvent); break;
-                    case EventType.TimeoutWin: GenerateTimeoutWinScript(response, gameEvent); break;
-                    case EventType.TimeoutLoose: GenerateTimeoutLooseScript(response, gameEvent); break;
+                    GameEvent gameEvent = player.Events.First().Value;
+                    switch (gameEvent.Type)
+                    {
+                        case EventType.DealCards: GenerateDealScript(response, playerId, gameEvent); break;
+                        case EventType.PlaceCard: GeneratePlaceCardScript(response, playerId, gameEvent); break;
+                        case EventType.DoublingOffer: GenerateDoublingOfferScript(response, gameEvent); break;
+                        case EventType.ContinueQuestion: GenerateContinueQuestionEventScript(response, gameEvent); break;
+                        case EventType.ShowCards: GenerateShowCardsEventScript(response, gameEvent); break;
+                        case EventType.PlayerTurn: GeneratePlayerTurnScript(response, gameEvent, playerId); break;
+                        case EventType.WinDeal: GeneratePlayerWinScript(response, gameEvent); break;
+                        case EventType.LooseDeal: GeneratePlayerLooseScript(response, gameEvent); break;
+                        case EventType.WinAndRematchOffer: GenerateWinAndRematchScript(response, gameEvent); break;
+                        case EventType.LooseAndRematchOffer: GenerateLooseAndRematchScript(response, gameEvent); break;
+                        case EventType.ContinueGame: GenerateContinueGameScript(response, gameEvent); break;
+                        case EventType.TimeoutWin: GenerateTimeoutWinScript(response, gameEvent); break;
+                        case EventType.TimeoutLoose: GenerateTimeoutLooseScript(response, gameEvent); break;
+                        case EventType.StartGameQuestion: GenerateStartGameQuestionScript(response, gameEvent); break;
+                        case EventType.PlayerRejected: GeneratePlayerRejectedScript(response, gameEvent); break;
+                        case EventType.TakeCards: GenerateTakeCardsScript(response, gameEvent); break;
+                        case EventType.LeaveGame: GenerateLeaveGameScript(response, gameEvent); break;
+                        case EventType.StopGameMessage: GenerateStopGameMessageScript(response, gameEvent); break;
+                        case EventType.StartGame: GenerateStartGameScript(response, gameEvent); break;
+                        case EventType.Error: GenerateErrorScript(response, gameEvent); break;
+                    }
                 }
+
+                // draw button controls (test)
+                GenerateButtonsHtml(response);
+
+                // draw game info
+                GenerateGameInfoHtml(response, playerId);
+
+                // draw taken cards 
+                GenerateTakenCards(response, playerId);
+
+                // add init script to update
+                response.Script.Append("initBoard();");
+
+                // draw player events (only for test users)
+                if (playerId == 5 || playerId == 7 || playerId == 8 || playerId == 9)
+                    GeneratePlayerEventsHtml(response, playerId);
+
+                // show waiting message if game not started
+                if (Game.Status == GameStatus.WaitingForOponent && playerId != getBuraGame().Players.First().Key)
+                {
+                    GenerateOponentWaitingScript(response, null);
+                }
+
+                return response;
             }
-
-            // draw button controls (test)
-            GenerateButtonsHtml(response);
-
-            // draw game info
-            GenerateGameInfoHtml(response, playerId);
-
-            // draw taken cards 
-            GenerateTakenCards(response, playerId);
-
-            // add init script to update
-            response.Script.Append("initBoard();");
-
-            // draw player events
-            GeneratePlayerEventsHtml(response, playerId);
-
-            return response;
+            else
+            {
+                GeneratePlayerRejectedScript(response, null);
+                return response;
+            }
         }
 
         public BuraGame getBuraGame()
@@ -118,20 +144,39 @@ namespace TS.Gambling.Bura
          * */
         private void GenerateTimerScript(HtmlResponse response, int playerId, GameEvent gameEvent)
         {
+            // disable timer for some events
+            if (gameEvent.Type == EventType.DealCards
+                || gameEvent.Type == EventType.WaitForOpponent
+                || gameEvent.Type == EventType.LooseAndRematchOffer
+                || gameEvent.Type == EventType.TimeoutLoose
+                || gameEvent.Type == EventType.TimeoutWin
+                || gameEvent.Type == EventType.TakeCards
+                || gameEvent.Type == EventType.WinAndRematchOffer)
+                return;
+            if (GameContext.GetCurrentPlayer().PlayerId != playerId)
+            {
+                if (gameEvent.Type == EventType.WinDeal
+                    || gameEvent.Type == EventType.LooseDeal
+                    || gameEvent.Type == EventType.ShowCards)
+                    return;
+            }
+
             string timerPosition = GameContext.GetCurrentPlayer().PlayerId == playerId ? "Bottom" : "Top";
             long elapsedTime = (DateTime.Now.Ticks - gameEvent.EventDate.Ticks) / TimeSpan.TicksPerSecond;
-            long elapsedHeight = elapsedTime * 100 / GameEvent.EVENT_TIME;
-            if (elapsedHeight > 100)
-                elapsedHeight = 100;
+            long elapsedWidth = TIMER_LENGTH * elapsedTime / GameEvent.EVENT_TIME;
+            if (elapsedWidth > TIMER_LENGTH)
+                elapsedWidth = TIMER_LENGTH;
+            int remainigWidth = (int)(TIMER_LENGTH - elapsedWidth);
+
             // add timer progress
             response.Html.AppendFormat(
-                "<div class='PlayerTimer {1}' id='TimerPlayer{0}'><div class='ElapsedContent' style='height:{2}px;'></div></div>",
-                playerId, timerPosition, elapsedHeight);
+                "<div class='PlayerTimer {1}' id='TimerPlayer{0}'><div class='RemainingContent' style='width:{2}px;'></div></div>",
+                playerId, timerPosition, remainigWidth);
             
             // timer works only for current player
             if (GameContext.GetCurrentPlayer().PlayerId == playerId)
             {
-                response.Script.AppendFormat("StartTimer({0}, {1}, {2});", playerId, elapsedHeight, GameEvent.EVENT_TIME * 1000 / 100);
+                response.Script.AppendFormat("StartTimer({0}, {1}, {2});", playerId, elapsedWidth, GameEvent.EVENT_TIME * 1000 / 407);
             }
         }
 
@@ -157,6 +202,7 @@ namespace TS.Gambling.Bura
          * */
         protected void GenerateDealScript(HtmlResponse response, int playerId, GameEvent gameEvent)
         {
+            response.Script.Append("try { ");
             int cardCount = int.Parse(gameEvent.EventValue.ToString());
             foreach (int currentPlayerId in Game.Players.Keys)
             {
@@ -170,7 +216,7 @@ namespace TS.Gambling.Bura
                 int startingTop = trumpArea.Top;
                 int startingLeft = trumpArea.Left;
 
-                int currentIndex = (3 - cardCount);
+                int currentIndex = (getBuraGame().LongGameStyle ? BuraGame.LONG_BURA_CARD_COUNT : BuraGame.CARD_COUNT) - cardCount;
 
                 for (int index = player.PlayerCards.Count - cardCount; index < player.PlayerCards.Count; index++)
                 {
@@ -195,14 +241,18 @@ namespace TS.Gambling.Bura
                     currentIndex++;
                 }
             }
-            response.Script.AppendFormat("setTimeout(\"BoardEvent('EndEvent:{0}')\", 1000);", gameEvent.EventId);
+            response.Script.Append("playSound('soundDeal');");
+            response.Script.Append("} finally { ");
+            response.Script.AppendFormat("setTimeout(\"BoardEvent('EndEvent:{0}')\", 800);", gameEvent.EventId);
+            response.Script.Append("} ");
         }
 
         protected void GeneratePlayerCards(HtmlResponse response, BuraPlayer player, List<Card> playerCards, HtmlArea area, bool isMainPlayer)
         {
             int top = area.Top + 20;
-            //int left = area.Left;
-            int left = area.Left + (area.Width - (area.Width / 5 * playerCards.Count)) / 2;
+            int left = area.Left;
+            int zIndex = 0;
+            //int left = area.Left + (area.Width - (area.Width / 5 * playerCards.Count)) / 2;
 
             int currentIndex = 0;
             foreach (Card card in playerCards)
@@ -212,16 +262,18 @@ namespace TS.Gambling.Bura
                 string cardClass = isMainPlayer ? "Card" : "HiddenCard";
                 if (card.Type != CardType.EmptyCard)
                 {
-                    response.Html.AppendFormat("<div {0} class='{1}' style='top:{2}px; left:{3}px; height:{4}px; width:{5}px; z-index:0; position:absolute;'><img alt='' src='{6}' /></div>",
-                        cardId, cardClass, top, left, CARD_HEIGHT, CARD_WIDTH, cardImage);
+                    response.Html.AppendFormat("<div {0} class='{1}' style='top:{2}px; left:{3}px; height:{4}px; width:{5}px; z-index:{7}; position:absolute;'><img alt='' src='{6}' /></div>",
+                        cardId, cardClass, top, left, CARD_HEIGHT, CARD_WIDTH, cardImage, zIndex);
                 }
                 else
                 {
-                    response.Html.AppendFormat("<div class='EmptyCard' style='top:{0}px; left:{1}px; height:{2}px; width:{3}px; z-index:0; position:absolute;'></div>",
-                        top, left, CARD_HEIGHT, CARD_WIDTH);
+                    response.Html.AppendFormat("<div class='EmptyCard' style='top:{0}px; left:{1}px; height:{2}px; width:{3}px; z-index:{4}; position:absolute;'></div>",
+                        top, left, CARD_HEIGHT, CARD_WIDTH, zIndex);
                 }
 
-                left += CARD_WIDTH + 8;
+                left += getBuraGame().LongGameStyle ? LONG_BURA_CARDS_DELTA : SHORT_BURA_CARDS_DELTA;
+                //left += CARD_WIDTH + 8;
+                zIndex++;
                 currentIndex++;
             }
         }
@@ -278,6 +330,7 @@ namespace TS.Gambling.Bura
 
         protected void GeneratePlaceCardScript(HtmlResponse response, int viewerPlayerId, GameEvent gameEvent)
         {
+            response.Script.Append("try { ");
             BuraPlayer player = (BuraPlayer)gameEvent.EventValue;
 
             int currentIndex = 0;
@@ -308,9 +361,11 @@ namespace TS.Gambling.Bura
                 }
                 left += CARD_WIDTH + 8;
             }
-
+            response.Script.Append("playSound('soundPlaceCard');");
             response.Script.Append("setTimeout(\"$('.PlacedHiddenCardScript').css('display', 'none');$('.PlacedCard').removeClass('PlaceCardScript');\", 100);");
+            response.Script.Append("} finally { ");
             response.Script.Append("setTimeout(\"BoardEvent('EndEvent:").Append(gameEvent.EventId).Append("')\", 200);");
+            response.Script.Append("} ");
         }
 
         protected void GenerateTrumpCard(HtmlResponse response, Card trump)
@@ -326,16 +381,29 @@ namespace TS.Gambling.Bura
             if (getBuraGame().DealingCards.Count > 0)
             {
                 string cardImage = GetCardImage(trump);
-                response.Html.AppendFormat("<div {0} class='{1}' style='top:{2}px; left:{3}px; height:{4}px; width:{5}px; position:absolute; z-index:1;'><img alt='' src='{6}' /></div>",
+                response.Html.AppendFormat("<div {0} class='{1}' style='top:{2}px; left:{3}px; height:{4}px; width:{5}px; position:absolute;'><img alt='' src='{6}' /></div>",
                     cardId, cardClass, top, left, CARD_HEIGHT, CARD_HEIGHT, cardImage);
-                response.Script.AppendFormat("$('.Trump img').rotate(-90);");
-                response.Html.AppendFormat("<div {0} class='CD{1}' style='top:{2}px; left:{3}px; height:{4}px; width:{5}px; position:absolute; z-index:2;'><img alt='' src='{6}' /></div>",
-                    "", "Cover", top, left + CARD_WIDTH / 2, CARD_HEIGHT, CARD_HEIGHT, GetHiddenCardImage());
+                response.Script.AppendFormat("$('.Trump img').rotate(-90);$('.Trump').css('z-index','1');");
+
+                int dealingCardCount = getBuraGame().DealingCards.Count;
+                string remainingCardImage = "";
+                if (dealingCardCount > 25)
+                    remainingCardImage = "Cards/RemainingCards3.png";
+                else if (dealingCardCount > 17)
+                    remainingCardImage = "Cards/RemainingCards2.png";
+                else if (dealingCardCount > 7)
+                    remainingCardImage = "Cards/RemainingCards1.png";
+                else if (dealingCardCount > 0)
+                    remainingCardImage = "Cards/RemainingCards0.png";
+
+                response.Html.AppendFormat("<div {0} class='CD{1}' style='top:{2}px; left:{3}px; height:{4}px; width:{5}px; position:absolute;'><img alt='' src='{6}' /></div>",
+                    "", "Cover", top, left + CARD_WIDTH / 2, CARD_HEIGHT, CARD_HEIGHT, GetImageUrl(remainingCardImage));
+                response.Script.AppendFormat("$('.CD{0} img').rotate(360);$('.CD{0}').css('z-index','2');", "Cover");
             }
             else
             {
                 string cardImage = GetCardImage(getBuraGame().Cards[trump.Type.ToString()]);
-                response.Html.AppendFormat("<div {0} class='{1}' style='top:{2}px; left:{3}px; height:{4}px; width:{5}px; position:absolute; z-index:1;'><img alt='' src='{6}' /></div>",
+                response.Html.AppendFormat("<div {0} class='{1}' style='top:{2}px; left:{3}px; height:{4}px; width:{5}px; position:absolute;'><img alt='' src='{6}' /></div>",
                     cardId, cardClass, top, left, CARD_HEIGHT, CARD_HEIGHT, cardImage);
                 response.Script.AppendFormat("$('.Trump img').rotate(-90);");
             }
@@ -348,7 +416,7 @@ namespace TS.Gambling.Bura
                 BuraPlayer player = getBuraGame().getPlayer(playerId);
                 HtmlArea area = (playerId == currentPlayerId) ? takenCardsAreas[0] : takenCardsAreas[1];
                 int left = area.Left;
-                int top = area.Top + 20;
+                int top = area.Top + 10;
                 int zIndex = 15;
                 string cardImage = GetHiddenCardImage();
 
@@ -364,7 +432,7 @@ namespace TS.Gambling.Bura
                     if (remainingCards <= 2)
                     {
                         response.Html.AppendFormat("<div class='TakenCard' style='top:{0}px; left:{1}px; height:{2}px; width:{3}px; z-index:{4}; position:absolute;'><img alt='' src='{5}' /></div>",
-                            top, left + CARD_WIDTH / 2, CARD_HEIGHT, CARD_WIDTH, zIndex, cardImage);
+                            top, left + CARD_WIDTH / 4, CARD_HEIGHT, CARD_WIDTH, zIndex, GetImageUrl("Cards/TakenCards0.png"));
 
                         remainingCards -= 1;
                     }
@@ -391,18 +459,18 @@ namespace TS.Gambling.Bura
             {
                 response.Html.Append(
                     BuraMessage.GetMessage(
-                        string.Format("Player offers Doubling: {0}", doubling.DoublingText),
+                        string.Format("მოწინააღმდეგემ გითხრათ: {0}", doubling.DoublingText),
                         new MessageOption[3]{
-                            new MessageOption("Accept", string.Format("BoardEvent(\"DoublingAccept:{0}\")", gameEvent.EventId), "Red"),
+                            new MessageOption("დათანხმება", string.Format("BoardEvent(\"DoublingAccept:{0}\")", gameEvent.EventId), "Red"),
                             new MessageOption(string.Format("{0}", GameDoubling.Items[doubling.DoublingValue].DoublingText), string.Format("BoardEvent(\"DoublingReDouble:{0}\")", gameEvent.EventId), "Blue"),
-                            new MessageOption("Reject", string.Format("BoardEvent(\"DoublingReject:{0}\")", gameEvent.EventId), "Green")}));
+                            new MessageOption("უარი", string.Format("BoardEvent(\"DoublingReject:{0}\")", gameEvent.EventId), "Green")}));
             } else {
                 response.Html.Append(
                     BuraMessage.GetMessage(
-                        string.Format("Player offers Doubling: {0}", doubling.DoublingText),
+                        string.Format("მოწინააღმდეგემ გითხრათ: {0}", doubling.DoublingText),
                         new MessageOption[2]{
-                            new MessageOption("Accept", string.Format("BoardEvent(\"DoublingAccept:{0}\")", gameEvent.EventId), "Red"),
-                            new MessageOption("Reject", string.Format("BoardEvent(\"DoublingReject:{0}\")", gameEvent.EventId), "Blue")}));
+                            new MessageOption("დათანხმება", string.Format("BoardEvent(\"DoublingAccept:{0}\")", gameEvent.EventId), "Red"),
+                            new MessageOption("უარი", string.Format("BoardEvent(\"DoublingReject:{0}\")", gameEvent.EventId), "Blue")}));
             }
         }
 
@@ -410,10 +478,15 @@ namespace TS.Gambling.Bura
         {
             response.Html.Append(
                 BuraMessage.GetMessage(
-                    string.Format("Choose your Option"),
+                    string.Format("თქვენი სვლაა"),
                     new MessageOption[2]{
-                            new MessageOption("Continue", string.Format("BoardEvent(\"Continue:{0}\")", gameEvent.EventId), "Red"),
-                            new MessageOption("Show Cards", string.Format("BoardEvent(\"ShowCards:{0}\")", gameEvent.EventId), "Green")}));
+                            new MessageOption("გაგრძელება", string.Format("BoardEvent(\"Continue:{0}\")", gameEvent.EventId), "Red"),
+                            new MessageOption("ვარ", string.Format("BoardEvent(\"ShowCards:{0}\")", gameEvent.EventId), "Green")}));
+        }
+
+        protected void GenerateStartGameScript(HtmlResponse response, GameEvent gameEvent)
+        {
+            response.Script.AppendFormat("setTimeout(\"BoardEvent('StartGame:{0}')\", 5);", gameEvent.EventId);
         }
 
         protected void GenerateShowCardsEventScript(HtmlResponse response, GameEvent gameEvent)
@@ -432,11 +505,11 @@ namespace TS.Gambling.Bura
                 totalValue += card.Value;
             }
             response.Html.Append("</span>")
-                .AppendFormat("<div>{0}</div>", totalValue)
+                //.AppendFormat("<div>{0}</div>", totalValue)
                 .Append("</div>");
             if (playerId != gameEvent.ViewerPlayerId) {
                 response.Html.Append(
-                    BuraMessage.GetMessage(string.Format("თქვენმა მოწინააღმდეგემ დააგროვა {0} ქულა", totalValue), 
+                    BuraMessage.GetMessage(string.Format("მოწინააღმდეგემ დააგროვა {0} ქულა", totalValue), 
                         new MessageOption[1]{new MessageOption("დახურვა", string.Format("BoardEvent(\"EndEvent:{0}\")", gameEvent.EventId), "Silver")})
                 );
             } else {
@@ -445,32 +518,71 @@ namespace TS.Gambling.Bura
                         new MessageOption[1] { new MessageOption("დახურვა", string.Format("BoardEvent(\"EndEvent:{0}\")", gameEvent.EventId), "Silver") })
                 );
             }
+
+            // hide last placed cards
+            //response.Script.AppendFormat("$('.PlacedHiddenCard').css('display', 'none');$('.PlacedCard').css('display', 'none');");
         }
 
-        protected void GeneratePlayerTurnScript(HtmlResponse response, GameEvent gameEvent)
+        protected void GeneratePlayerTurnScript(HtmlResponse response, GameEvent gameEvent, int playerId)
         {
             GameDoubling doubling = getBuraGame().Doubling;
-            if (doubling.DoublingValue < GameDoubling.MAX_DOUBLING_VALUE)
+            bool isFirstPlayer = getBuraGame().getOponentPlayer(playerId).PlacedCards.Count == 0;
+            if (isFirstPlayer)
             {
-                response.Html.Append(
-                    BuraMessage.GetMessage(string.Empty,
-                        new MessageOption[3] { 
-                        new MessageOption("ჩასვლა", "placeCards(true)", "Red"),
-                        new MessageOption("გატნევა", "placeCards(false)", "Blue"),
+                if (doubling.DoublingValue < GameDoubling.MAX_DOUBLING_VALUE && Game.DoublingOfferedBy != playerId)
+                {
+                    response.Html.Append(
+                        BuraMessage.GetMessage(string.Format("თქვენი სვლაა"),
+                            new MessageOption[2] { 
+                        new MessageOption("სვლა" , "placeCards(true)", "Red"),
                         new MessageOption(GameDoubling.Items[doubling.DoublingValue].DoublingText, string.Format("BoardEvent(\"DoublingOffer\")"),"Silver")})
-                );
+                    );
+                }
+                else
+                {
+                    response.Html.Append(
+                        BuraMessage.GetMessage(string.Format("თქვენი სვლაა"),
+                            new MessageOption[1] { 
+                        new MessageOption("სვლა", "placeCards(true)", "Red")})
+                    );
+                }
             }
             else
             {
-                response.Html.Append(
-                    BuraMessage.GetMessage(string.Empty,
-                        new MessageOption[2] { 
-                        new MessageOption("ჩასვლა", "placeCards(true)", "Red"),
-                        new MessageOption("გატნევა", "placeCards(false)", "Blue")})
-                );
+                if (doubling.DoublingValue < GameDoubling.MAX_DOUBLING_VALUE && Game.DoublingOfferedBy != playerId)
+                {
+                    response.Html.Append(
+                        BuraMessage.GetMessage(string.Format("თქვენი სვლაა"),
+                            new MessageOption[3] { 
+                        new MessageOption("გაჭრა", "placeCards(true)", "Red"),
+                        new MessageOption("ვატან", "placeCards(false)", "Blue"),
+                        new MessageOption(GameDoubling.Items[doubling.DoublingValue].DoublingText, string.Format("BoardEvent(\"DoublingOffer\")"),"Silver")})
+                    );
+                }
+                else
+                {
+                    response.Html.Append(
+                        BuraMessage.GetMessage(string.Format("თქვენი სვლაა"),
+                            new MessageOption[2] { 
+                        new MessageOption("გაჭრა", "placeCards(true)", "Red"),
+                        new MessageOption("ვატან", "placeCards(false)", "Blue")})
+                    );
+                }
             }
+
         }
 
+
+        protected void GenerateErrorScript(HtmlResponse response, GameEvent gameEvent)
+        {
+            ErrorInfo info = (ErrorInfo)gameEvent.EventValue;
+            response.Html.Append(
+                BuraMessage.GetDialogMessage(info.Message,
+                    new MessageOption[1] { 
+                        new MessageOption("დახურვა", string.Format("BoardEvent(\"EndEvent:{0}\")", gameEvent.EventId),"Silver")
+                        })
+            );
+        }
 
         protected void GeneratePlayerWinScript(HtmlResponse response, GameEvent gameEvent)
         {
@@ -487,7 +599,7 @@ namespace TS.Gambling.Bura
         {
             GameDoubling doubling = getBuraGame().Doubling;
             response.Html.Append(
-                BuraMessage.GetMessage("თქვენ წააგეთ ეს დარიგება",
+                BuraMessage.GetMessage("მოწინააღმდეგ მოიგო ეს დარიგება",
                     new MessageOption[1] { 
                         new MessageOption("დახურვა", string.Format("BoardEvent(\"EndEvent:{0}\")", gameEvent.EventId),"Silver")
                         })
@@ -498,10 +610,10 @@ namespace TS.Gambling.Bura
         {
             GameDoubling doubling = getBuraGame().Doubling;
             response.Html.Append(
-                BuraMessage.GetMessage("თქვენ მოიგეთ პარტია",
+                BuraMessage.GetDialogMessage("თქვენ გაიმარჯვეთ. მოგებული თანხა ანგარიშზე ჩაგერიცხებათ. გსურთ იგივე მოთამაშესთან თამაში?",
                     new MessageOption[2] { 
-                        new MessageOption("ახალი პარტია", string.Format("BoardEvent(\"RematchOffer:{0}\")", gameEvent.EventId),"Red"),
-                        new MessageOption("მაგიდის დატოვება", string.Format("BoardEvent(\"LeaveGame\")", gameEvent.EventId),"Blue")
+                        new MessageOption("კი", string.Format("BoardEvent(\"RematchOffer:{0}\")", gameEvent.EventId),"Red"),
+                        new MessageOption("არა", string.Format("BoardEvent(\"LeaveGame\")", gameEvent.EventId),"Blue")
                         })
             );
         }
@@ -510,10 +622,10 @@ namespace TS.Gambling.Bura
         {
             GameDoubling doubling = getBuraGame().Doubling;
             response.Html.Append(
-                BuraMessage.GetMessage("თქვენ წააგეთ პარტია",
+                BuraMessage.GetDialogMessage("მოწინააღმდეგემ გაიმარჯვა, გსურთ იგივე მოთამაშესთან თამაში?",
                     new MessageOption[2] { 
-                        new MessageOption("ახალი პარტია", string.Format("BoardEvent(\"RematchOffer:{0}\")", gameEvent.EventId),"Red"),
-                        new MessageOption("მაგიდის დატოვება", string.Format("BoardEvent(\"LeaveGame\")", gameEvent.EventId),"Blue")
+                        new MessageOption("კი", string.Format("BoardEvent(\"RematchOffer:{0}\")", gameEvent.EventId),"Red"),
+                        new MessageOption("არა", string.Format("BoardEvent(\"LeaveGame\")", gameEvent.EventId),"Blue")
                         })
             );
         }
@@ -522,9 +634,9 @@ namespace TS.Gambling.Bura
         {
             GameDoubling doubling = getBuraGame().Doubling;
             response.Html.Append(
-                BuraMessage.GetMessage("თქვენი მოწინააღმდეგე გავარდა თამაშიდან",
+                BuraMessage.GetDialogMessage(string.Format("მოწინააღმდეგე გავიდა თამაშიდან. თქვენ მოიგეთ {0} ლარი", getBuraGame().Amount),
                     new MessageOption[1] { 
-                        new MessageOption("მაგიდის დატოვება", string.Format("BoardEvent(\"LeaveGame\")", gameEvent.EventId),"Red")
+                        new MessageOption("დახურვა", string.Format("BoardEvent(\"LeaveGame\")", gameEvent.EventId),"Red")
                         })
             );
         }
@@ -533,24 +645,86 @@ namespace TS.Gambling.Bura
         {
             GameDoubling doubling = getBuraGame().Doubling;
             response.Html.Append(
-                BuraMessage.GetMessage("თქვენ გავარდით თამაშიდან",
+                BuraMessage.GetDialogMessage("თქვენი დრო ამოიწურა. მოგება მოწინააღმდეგეს ჩაეთვალა",
                     new MessageOption[1] { 
-                        new MessageOption("მაგიდის დატოვება", string.Format("BoardEvent(\"LeaveGame\")", gameEvent.EventId),"Blue")
+                        new MessageOption("დახურვა", string.Format("BoardEvent(\"LeaveGame\")", gameEvent.EventId),"Blue")
                         })
             );
         }
+
+
+        private void GenerateStartGameQuestionScript(HtmlResponse response, GameEvent gameEvent)
+        {
+            response.Html.Append(
+                BuraMessage.GetDialogMessage(string.Format("დავიწყოთ თამაში? მსურველია {0}", gameEvent.EventValue),
+                    new MessageOption[2] { 
+                        new MessageOption("კი", string.Format("BoardEvent(\"AcceptOponent:{0}\")", gameEvent.EventId),"Red"),
+                        new MessageOption("არა", string.Format("BoardEvent(\"RejectOponent:{0}\")", gameEvent.EventId),"Blue")
+                        })
+            );
+        }
+
+        private void GeneratePlayerRejectedScript(HtmlResponse response, GameEvent gameEvent)
+        {
+            GameDoubling doubling = getBuraGame().Doubling;
+            response.Html.Append(
+                BuraMessage.GetDialogMessage("მოთამაშემ უარი თქვა შეთავაზებაზე. სხვას შესთავაზეთ",
+                    new MessageOption[1] { 
+                        new MessageOption("OK", "BoardEvent(\"LeaveGame\")" ,"Red")
+                        })
+            );
+        }
+
+        private void GenerateOponentWaitingScript(HtmlResponse response, GameEvent gameEvent)
+        {
+            response.Html.Append(
+                BuraMessage.GetDialogMessage("დაელოდეთ მოწინააღმდეგის პასუხს",
+                    new MessageOption[0] {})
+            );
+        }
+
+        private void GenerateStopGameMessageScript(HtmlResponse response, GameEvent gameEvent)
+        {
+            response.Html.Append(
+                BuraMessage.GetDialogMessage("ტექნიკური სამუშაოებთან დაკავშირებით, დროებით შეჩერებულია მაგიდების შექმნა. გმადლობთ რომ თამაშობთ.",
+                    new MessageOption[1] { 
+                        new MessageOption("დახურვა", string.Format("BoardEvent(\"EndEvent:{0}\")", gameEvent.EventId),"Silver")
+                        })
+            );
+        }
+
 
         protected void GenerateContinueGameScript(HtmlResponse response, GameEvent gameEvent)
         {
             response.Script.Append("BoardEvent('ContinueGame');");
         }
 
+        protected void GenerateTakeCardsScript(HtmlResponse response, GameEvent gameEvent)
+        {
+            response.Script.AppendFormat("setTimeout(\"BoardEvent('TakeCards:{0}')\", 1500);", gameEvent.EventId);
+        }
+
+        protected void GenerateLeaveGameScript(HtmlResponse response, GameEvent gameEvent)
+        {
+            response.Script.Append("setTimeout(\"BoardEvent('LeaveGame')\", 200);");
+        }
+
         protected void GenerateGameInfoHtml(HtmlResponse response, int playerId)
         {
             StringBuilder builder = new StringBuilder();
+            // draw main info
+            builder
+                .AppendFormat("<p style=\"margin-bottom: 0px; margin-top: 0px;\">{0}</p>", (getBuraGame().Doubling.DoublingValue > 1 ? string.Format("ნათქვამია  {0}", getBuraGame().Doubling.DoublingText) : "&nbsp;"))
+                .AppendFormat("<p style=\"margin-top: 34px; margin-bottom: 0px;\">თამაში {0} ქულამდე</p>", getBuraGame().PlayingTill)
+                .AppendFormat("<p style=\"margin-bottom: 0px; margin-top: 2px;\">{0} ლარზე</p>", getBuraGame().Amount);
+            response.Script
+                .AppendFormat("$('.GameInfo').html('{0}');", builder.ToString());
+            
+            // draw detai info 
+            builder.Clear();
             builder
                 .AppendFormat("თამაში <font>{0}</font>-მდე &nbsp;", getBuraGame().PlayingTill)
-                .AppendFormat("<font>{0}</font> ლარზე<br />", getBuraGame().Amount)
+                .AppendFormat("<font>{0}</font> ლარზე<div style=\"height: 4px; width: 2px; display: block;\"></div>", getBuraGame().Amount)
                 .AppendFormat("თამაშის ტიპი <font>{0}</font><br />", getBuraGame().PassHiddenCards ? "დახურული" : "ღია")
                 .AppendFormat("მალიუტკა <font>{0}</font>", getBuraGame().StickAllowed ? "ურიგოთ" : "რიგით");
             response.Script
@@ -559,17 +733,30 @@ namespace TS.Gambling.Bura
 
             // draw players score and avatars
             BuraPlayer player = getBuraGame().getPlayer(playerId);
+            BuraPlayer oponent = getBuraGame().getOponentPlayer(playerId);
+            string playerScoreClass = "Draw";
+            string oponentScoreClass = "Draw";
+            if (oponent != null)
+            {
+                if (player.Score != oponent.Score)
+                {
+                    playerScoreClass = player.Score > oponent.Score ? "Win" : "Loose";
+                    oponentScoreClass = player.Score < oponent.Score ? "Win" : "Loose";
+                }
+            }
+            
             response.Script
-                .AppendFormat("$('.PlayerScore.Bottom').html('{0}');", player.Score)
+                .AppendFormat("$('.PlayerScore.Bottom').html('{0}').removeClass('Draw').removeClass('Win').removeClass('Loose').addClass('{1}');", player.Score, playerScoreClass)
                 .AppendFormat("$('.PlayerAvatar.Bottom .PlayerName').html('{0}');", player.PlayerName);
             
-            BuraPlayer oponent = getBuraGame().getOponentPlayer(playerId);
             if (oponent != null)
             {
                 response.Script
-                    .AppendFormat("$('.PlayerScore.Top').html('{0}');", oponent.Score)
+                    .AppendFormat("$('.PlayerScore.Top').html('{0}').removeClass('Draw').removeClass('Win').removeClass('Loose').addClass('{1}');", oponent.Score, oponentScoreClass)
                     .AppendFormat("$('.PlayerAvatar.Top .PlayerName').html('{0}');", oponent.PlayerName);
             }
+
+            
         }
 
 

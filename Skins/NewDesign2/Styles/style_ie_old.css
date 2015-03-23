@@ -1,0 +1,37 @@
+h1, h2, h3, h4, h5, h6 { color:#C3DFFF; font-weight:normal; font-family:BPGNinoMtavruliBold, Sylfaen, Arial; line-height:normal; }
+h2 { font-size:16.5px; }
+
+/* tabs */
+.ui-tabs-nav { position:absolute; margin:0; padding:0; margin-left:10px; z-index:5; top:0px; }
+.ui-tabs-nav li { float:left; list-style:none; list-style-image:none; width:187px; height:45px; overflow:hidden; margin:0; padding:0; z-index:0; background-image:url("../images/tab.png"); backgrounud-repeat: no-repeat; background-position:0px -50px; font-family:BPGNinoMtavruliBold, Sylfaen, Arial; font-size:18px; }
+.ui-tabs-nav li a { display:block; height:50px; line-height:50px; text-align:left; padding-left:20px; }
+
+.ui-tabs-hide { display:none; }
+.ui-tabs-panel { overflow:hidden; z-index:1;  }
+
+.ui-tabs-selected, .ui-state-active, .ui-state-hover { z-index:1000 !important; background-position: 0 -3px !important; }
+.ui-tabs-selected a, .ui-state-active a, .ui-state-hover a { color:#FFA800; text-decoration:none; }
+
+
+/* filtering */
+div.filterRow {	 
+	border-bottom:1px solid #404C5A; 
+	overflow:hidden; 
+	padding-left:6px; 
+	
+}
+div.filterRow div { 
+	overflow:hidden; 
+	display:inline-block; 
+	line-height:30px; 
+	padding-right:3px; 
+	white-space:nowrap; 
+	height:30px; 
+	zoom:1;
+	*display:inline;
+}
+
+
+.winContent h2 { padding:15px 0px 0px 20px;  margin-bottom:10px; }
+.winContentAvatar h2 { padding:15px 0px 0px 20px; margin-bottom:10px; }
+

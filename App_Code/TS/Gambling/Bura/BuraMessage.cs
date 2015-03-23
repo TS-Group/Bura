@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Text;
+using TS.Gambling.Core;
 
 namespace TS.Gambling.Bura
 {
@@ -37,6 +38,40 @@ namespace TS.Gambling.Bura
             builder.Append("<div class='clearer'></div></div>");
             builder.Append("</div>");
             return builder.ToString();
+        }
+
+        public static string GetDialogMessage(string messageText, MessageOption[] options)
+        {
+            /*
+                    <div id='popup_bg' style='position: absolute; left: 0pt; top: 0pt; width: 100%;
+                        height: 100%; background: none repeat scroll 0% 0% rgb(0, 0, 0); opacity: 0.3;'>
+                    </div>
+             * */
+            StringBuilder builder = new StringBuilder();
+            builder.AppendFormat(
+                @"
+                <div id='popup' style='position: absolute; left: 0pt; top: 0pt; width: 100%; height: 100%; z-index: 100; display:block;'>
+                    <div style='margin-top: 30px;' class='win'>
+    	                    <div class='winContent2'>
+                                <div id='avatarContainer'>")
+                .AppendFormat("<br/><h2 style='text-align: center; margin-top: 5px;'>{0}</h2>", messageText)
+                .AppendFormat("</div>");
+
+            builder.Append("<div style='padding-top:0px; text-align:center;'>");
+            foreach (MessageOption option in options)
+            {
+                builder.AppendFormat(
+                    @"<input type='button' value='{0}' class='submit {2}' onclick='{1}'>",
+                    option.OptionText, option.OptionAction, option.OptionColor);
+            }
+            builder.Append("</div>");
+            builder.Append(
+                @"
+                        </div>
+                    </div>
+                </div>");
+            return builder.ToString();
+
         }
 
     }

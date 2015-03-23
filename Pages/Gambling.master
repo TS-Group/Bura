@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-
+    <meta http-equiv="expires" content="Fri, 30 Dec 2011 12:00:00 GMT" />
     <script type="text/javascript">
         window.fbAsyncInit = function () {
             FB.init({
@@ -13,6 +13,10 @@
                 xfbml: true,
                 version: 'v2.2'
             });
+
+
+             
+            // ADD ADDITIONAL FACEBOOK CODE HERE
         };
 
         (function (d, s, id) {
@@ -23,16 +27,14 @@
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
     </script>
-
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="formGambling" runat="server">
-        <div>
-            <b style="color: Blue;">Gambling Master</b> \ 
-        <asp:SiteMapPath ID="GamblingSiteMapPath" runat="server">
-        </asp:SiteMapPath>
+        <div class="GamblingBoard">
+            <asp:SiteMapPath ID="GamblingSiteMapPath" runat="server">
+            </asp:SiteMapPath>
             <asp:ContentPlaceHolder ID="GamblingContentPlaceHolder" runat="server">
             </asp:ContentPlaceHolder>
         </div>

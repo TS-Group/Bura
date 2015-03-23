@@ -24,17 +24,11 @@ namespace TS.Gambling.Bura
         private List<Card> _placedCards;
         private byte[] _avatar;
         private int _score;
-
+        
         public int Score
         {
             get { return _score; }
             set { _score = value; }
-        }
-
-        public byte[] Avatar
-        {
-            get { return _avatar; }
-            set { _avatar = value; }
         }
 
         public List<Card> PlacedCards

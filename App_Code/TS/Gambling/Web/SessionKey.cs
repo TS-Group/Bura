@@ -12,6 +12,7 @@ namespace TS.Gambling.Web
     /// </summary>
     public class SessionKey
     {
+        public const string SESSION_ID = "SESSION_ID";
 
         public const string CURRENT_GAME = "GAMBLING_CURRENT_GAME";
         public const string CURRENT_PLAYER = "GAMBLING_CURRENT_PLAYER";
@@ -19,7 +20,7 @@ namespace TS.Gambling.Web
         public const string CURRNET_GAME_VERSION = "GAMBLING_CURRENT_GAME_VERSION";
         public const string VIEW_BURA_GAME_ID = "GAMBLING_VIEW_BURA_GAME_ID";
         public const string VIEW_BURA_GAME = "GAMBLING_VIEW_BURA_GAME";
-        public const string VIEW_BURA_GAME_VERSION = "GAMBLING_VIEW_BURA_GAME_VERSION";
+        public const string VIEW_BURA_GAME_VERSION = "GAMBLING_VIEW_BURA_GAME_VERSION";        
 
         public SessionKey()
         {
