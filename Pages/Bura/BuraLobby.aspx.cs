@@ -13,18 +13,20 @@ public partial class Pages_BuraLobby : Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        string fbUserId = "123";
 
-        if ((Session[SessionKey.SESSION_ID] == null && Request.QueryString["SessionId"] != null) ||
-            (Session[SessionKey.SESSION_ID] != null && Request.QueryString["SessionId"] != null &&
-            Session[SessionKey.SESSION_ID].ToString() != Request.QueryString["SessionId"]))
+
+        if (string.IsNullOrEmpty(fbUserId))
         {
-            DataBaseManager.ResultResponse result = DataBaseManager.CheckBuraRequest(Request.QueryString["SessionId"]);
+            string userName = "";
+
+            DataBaseManager.ResultResponse result = DataBaseManager.LoadOrCreateFbUser(fbUserId);
             if (result.errorCode != 0)
             {
                 Response.Redirect("~/Pages/Bura/ErrorPage.aspx");
                 return;
             }
+
             // Load game creator player object from database
             GamblingModel.Entities entities = new GamblingModel.Entities();
             GamblingModel.Player dbPlayer = entities.Players.FirstOrDefault(x => x.PlayerId == result.playerId);
@@ -60,7 +62,7 @@ public partial class Pages_BuraLobby : Page
         {
             // Load game creator player object from database
             GamblingModel.Entities entities = new GamblingModel.Entities();
-            GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == bPlayer.PlayerId).FirstOrDefault();
+            GamblingModel.Player dbPlayer = entities.Players.FirstOrDefault(x => x.PlayerId == bPlayer.PlayerId);
             if (dbPlayer != null)
             {
                 bPlayer.PlayerName = dbPlayer.PlayerName;

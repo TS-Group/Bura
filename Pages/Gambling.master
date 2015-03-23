@@ -6,27 +6,6 @@
 <head runat="server">
     <title></title>
     <meta http-equiv="expires" content="Fri, 30 Dec 2011 12:00:00 GMT" />
-    <script type="text/javascript">
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '356739501200640',
-                xfbml: true,
-                version: 'v2.2'
-            });
-
-
-             
-            // ADD ADDITIONAL FACEBOOK CODE HERE
-        };
-
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
