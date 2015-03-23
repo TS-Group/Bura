@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.UI;
+using TS.Gambling.FaceBook;
 using TS.Gambling.Web;
 using TS.Gambling.Bura;
 using TS.Gambling.DataProviders;
@@ -18,9 +19,17 @@ public partial class Pages_BuraLobby : Page
 
         if (string.IsNullOrEmpty(fbUserId))
         {
-            string userName = "";
+            FacebookUser fbUser = new FacebookUser
+            {
+                UserId = "1",
+                FirstName = "Total",
+                LastName = "Soft",
+                Gender = "mail",
+                EMail = "info@crystalbet.com",
+                BirthDate = "01/01/2004"
 
-            DataBaseManager.ResultResponse result = DataBaseManager.LoadOrCreateFbUser(fbUserId);
+            };
+            DataBaseManager.ResultResponse result = DataBaseManager.LoadPlayer(fbUser);
             if (result.errorCode != 0)
             {
                 Response.Redirect("~/Pages/Bura/ErrorPage.aspx");
@@ -35,14 +44,14 @@ public partial class Pages_BuraLobby : Page
             BuraPlayer player = new BuraPlayer();
             if (dbPlayer != null)
             {
-                player.ClientId = result.playerId;
+                player.ClientId = result.playerId.ToString();
                 player.PlayerName = dbPlayer.PlayerName;
                 player.Balance = dbPlayer.Balance;
                 player.Avatar = dbPlayer.PlayerAvatar;
             }
             else
             {
-                player.ClientId = 0;
+                player.ClientId = "0";
                 player.PlayerName = "Undefined";
                 player.Balance = 0;
                 player.Avatar = "1";
@@ -71,7 +80,7 @@ public partial class Pages_BuraLobby : Page
             }
             else
             {
-                bPlayer.ClientId = 0;
+                bPlayer.ClientId = "0";
                 bPlayer.PlayerName = "Undefined";
                 bPlayer.Balance = 0;
                 bPlayer.Avatar = "1";
@@ -147,19 +156,19 @@ public partial class Pages_BuraLobby : Page
         int gameId = IdGenerator.NextValue;
 
         string decimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
-        String GameAmount = TextBoxAmount.Text;
-        GameAmount = GameAmount.Replace(",", decimalSeparator).Replace(".", decimalSeparator);
+        String gameAmount = TextBoxAmount.Text;
+        gameAmount = gameAmount.Replace(",", decimalSeparator).Replace(".", decimalSeparator);
         double amount = 0;
         try
         {
-            amount = Double.Parse(GameAmount);
+            amount = Double.Parse(gameAmount);
         }
         catch (Exception ex)
         {
             amount = 0.4;
         }
 
-        TS.Gambling.Core.Player currentPlayer = GameContext.GetCurrentPlayer();
+        Player currentPlayer = GameContext.GetCurrentPlayer();
 
         if (amount < 0.4)
         {

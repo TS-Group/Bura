@@ -14,6 +14,6 @@ public partial class Pages_FaceBookLoader : System.Web.UI.Page
 
     protected void ButtonRedirect_OnClick(object sender, EventArgs e)
     {
-        
+        Response.Redirect(VirtualPathUtility.ToAbsolute("~/Pages/BuraLobby.aspx"));
     }
 }

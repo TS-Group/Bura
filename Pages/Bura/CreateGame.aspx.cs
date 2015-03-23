@@ -9,8 +9,7 @@ public partial class Gambling_Bura_CreateGame : System.Web.UI.Page
     {
         if (Request.UserHostAddress != "127.0.0.1")
         {
-            Server.Transfer("~/Pages/Bura/BuraLobby.aspx");
-            return;
+            Server.Transfer("~/Pages/Bura/BuraLobby.aspx");            
         }
     }
     protected void ButtonCreateGame_Click(object sender, EventArgs e)
@@ -19,14 +18,16 @@ public partial class Gambling_Bura_CreateGame : System.Web.UI.Page
 
         // Load game creator player object from database
         GamblingModel.Entities entities = new GamblingModel.Entities();
-        GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == playerId).FirstOrDefault();
+        GamblingModel.Player dbPlayer = entities.Players.FirstOrDefault(x => x.PlayerId == playerId);
 
         // Create and fill player object
-        BuraPlayer player = new BuraPlayer();
-        player.ClientId = playerId;
-        player.PlayerName = dbPlayer.PlayerName;
-        player.Balance = dbPlayer.Balance;
-        player.Avatar = dbPlayer.PlayerAvatar;
+        BuraPlayer player = new BuraPlayer
+        {
+            ClientId = playerId.ToString(),
+            PlayerName = dbPlayer.PlayerName,
+            Balance = dbPlayer.Balance,
+            Avatar = dbPlayer.PlayerAvatar
+        };
 
 
         GameContext.SetCurrentPlayer(player);
@@ -44,14 +45,16 @@ public partial class Gambling_Bura_CreateGame : System.Web.UI.Page
         int playerId = int.Parse(TextBoxPlayerId.Text);
         // Load game creator player object from database
         GamblingModel.Entities entities = new GamblingModel.Entities();
-        GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == playerId).FirstOrDefault();
+        GamblingModel.Player dbPlayer = entities.Players.FirstOrDefault(x => x.PlayerId == playerId);
 
         // Create and fill player object
-        BuraPlayer player = new BuraPlayer();
-        player.ClientId = playerId;
-        player.PlayerName = dbPlayer.PlayerName;
-        player.Balance = dbPlayer.Balance;
-        player.Avatar = dbPlayer.PlayerAvatar;
+        BuraPlayer player = new BuraPlayer
+        {
+            ClientId = playerId.ToString(),
+            PlayerName = dbPlayer.PlayerName,
+            Balance = dbPlayer.Balance,
+            Avatar = dbPlayer.PlayerAvatar
+        };
 
         GameContext.SetCurrentPlayer(player);
         int gameId = int.Parse(TextBoxGameId.Text);
