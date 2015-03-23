@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using TS.Gambling.Bura;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
 using TS.Gambling.Web;
 
 public partial class Gambling_Bura_CreateGame : System.Web.UI.Page

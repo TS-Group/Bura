@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using TS.Gambling.Web;
 using TS.Gambling.Bura;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
 using TS.Gambling.DataProviders;
 using TS.Gambling.Core;
 using System.Globalization;
 
-public partial class Pages_BuraLobby : System.Web.UI.Page
+public partial class Pages_BuraLobby : Page
 {
-    public BuraGameListProvider.BuraGameFilter filter = new BuraGameListProvider.BuraGameFilter();
+    protected readonly BuraGameListProvider.BuraGameFilter filter = new BuraGameListProvider.BuraGameFilter();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -25,7 +19,7 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             (Session[SessionKey.SESSION_ID] != null && Request.QueryString["SessionId"] != null &&
             Session[SessionKey.SESSION_ID].ToString() != Request.QueryString["SessionId"]))
         {
-            DataBaseManager.ResultResponse result = DataBaseManager.CheckBuraRequest(Request.QueryString["SessionId"].ToString());
+            DataBaseManager.ResultResponse result = DataBaseManager.CheckBuraRequest(Request.QueryString["SessionId"]);
             if (result.errorCode != 0)
             {
                 Response.Redirect("~/Pages/Bura/ErrorPage.aspx");
@@ -33,7 +27,7 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             }
             // Load game creator player object from database
             GamblingModel.Entities entities = new GamblingModel.Entities();
-            GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == result.playerId).FirstOrDefault();
+            GamblingModel.Player dbPlayer = entities.Players.FirstOrDefault(x => x.PlayerId == result.playerId);
 
             // Create and fill player object
             BuraPlayer player = new BuraPlayer();
@@ -125,8 +119,8 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             filter.StickAllowed += "2";
         try
         {
-            filter.FromAmount = double.Parse(fFromAmount.Text.ToString());
-            filter.ToAmount = double.Parse(fToAmount.Text.ToString());
+            filter.FromAmount = double.Parse(fFromAmount.Text);
+            filter.ToAmount = double.Parse(fToAmount.Text);
         }
         catch (Exception ex)
         {
