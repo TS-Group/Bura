@@ -22,8 +22,7 @@ public partial class Gambling_Bura_CreateGame : System.Web.UI.Page
 
         // Create and fill player object
         BuraPlayer player = new BuraPlayer
-        {
-            ClientId = playerId.ToString(),
+        {            
             PlayerName = dbPlayer.PlayerName,
             Balance = dbPlayer.Balance,
             Avatar = dbPlayer.PlayerAvatar
@@ -49,8 +48,7 @@ public partial class Gambling_Bura_CreateGame : System.Web.UI.Page
 
         // Create and fill player object
         BuraPlayer player = new BuraPlayer
-        {
-            ClientId = playerId.ToString(),
+        {            
             PlayerName = dbPlayer.PlayerName,
             Balance = dbPlayer.Balance,
             Avatar = dbPlayer.PlayerAvatar

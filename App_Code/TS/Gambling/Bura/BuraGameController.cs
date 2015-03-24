@@ -66,8 +66,7 @@ namespace TS.Gambling.Bura
             }
 
             BuraPlayer bp = new BuraPlayer
-            {
-                ClientId = player.ClientId,
+            {                
                 PlayerName = player.PlayerName,
                 Avatar = player.Avatar
             };
@@ -105,10 +104,11 @@ namespace TS.Gambling.Bura
                 throw new GamblingException(ErrorInfo.NOT_ENOUGH_MONEY);
             }
             
-            BuraPlayer bp = new BuraPlayer();
-            bp.ClientId = player.ClientId;
-            bp.PlayerName = player.PlayerName;
-            bp.Avatar = player.Avatar;
+            BuraPlayer bp = new BuraPlayer
+            {
+                PlayerName = player.PlayerName, 
+                Avatar = player.Avatar
+            };
 
             GameContext.SetCurrentPlayer(bp);
 

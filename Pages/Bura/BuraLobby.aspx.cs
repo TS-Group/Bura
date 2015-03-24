@@ -43,15 +43,13 @@ public partial class Pages_BuraLobby : Page
             // Create and fill player object
             BuraPlayer player = new BuraPlayer();
             if (dbPlayer != null)
-            {
-                player.ClientId = result.playerId.ToString();
+            {                
                 player.PlayerName = dbPlayer.PlayerName;
                 player.Balance = dbPlayer.Balance;
                 player.Avatar = dbPlayer.PlayerAvatar;
             }
             else
-            {
-                player.ClientId = "0";
+            {                
                 player.PlayerName = "Undefined";
                 player.Balance = 0;
                 player.Avatar = "1";
@@ -79,8 +77,7 @@ public partial class Pages_BuraLobby : Page
                 bPlayer.Avatar = dbPlayer.PlayerAvatar;
             }
             else
-            {
-                bPlayer.ClientId = "0";
+            {                
                 bPlayer.PlayerName = "Undefined";
                 bPlayer.Balance = 0;
                 bPlayer.Avatar = "1";
