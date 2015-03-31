@@ -13,6 +13,7 @@ namespace TS.Gambling.Web
     public class SessionKey
     {
         public const string SESSION_ID = "SESSION_ID";
+        public const string PLAYER_ID = "PLAYER_ID";
 
         public const string CURRENT_GAME = "GAMBLING_CURRENT_GAME";
         public const string CURRENT_PLAYER = "GAMBLING_CURRENT_PLAYER";

@@ -29,8 +29,6 @@
 <![endif]-->
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="GamblingContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="ScriptManagerLobby" runat="server">
-    </asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanelPage" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <asp:UpdatePanel ID="UpdatePanelTimer" runat="server">
@@ -175,65 +173,69 @@
                                 <div id="lobbyMainInner" class="rounded5px">
                                     <div class="scrollerContent">
                                         <div id="tabs-yvela">
-                                            <asp:UpdatePanel ID="UpdatePanelLobby" runat="server">
+                                            <asp:UpdatePanel ID="UpdatePanelLobby" runat="server" UpdateMode="Conditional">
                                                 <ContentTemplate>
-                                                    <table id="lobbytable" cellpadding="0" cellspacing="0" border="0" width="100%">
-                                                        <thead>
-                                                            <tr class="header">
-                                                                <th id="header_1">
-                                                                    &nbsp;
-                                                                </th>
-                                                                <th id="header_2" class="sort lobbyInfo">
-                                                                    მოთამაშე
-                                                                </th>
-                                                                <th id="header_3" class="sort lobbyInfo">
-                                                                    თანხა
-                                                                </th>
-                                                                <th id="header_4" class="sort lobbyInfo">
-                                                                    რაუნდი
-                                                                </th>
-                                                                <th id="header_5" class="sort lobbyInfo">
-                                                                    კარტები
-                                                                </th>
-                                                                <th id="header_6" class="sort lobbyInfo">
-                                                                    მალიუტკა
-                                                                </th>
-                                                                <th id="header_7" class="sort lobbyInfo">
-                                                                    სტატუსი
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <%
-                                                            foreach (TS.Gambling.DataProviders.BuraGameItem item in TS.Gambling.DataProviders.BuraGameListProvider.GetBuraGamesList(filter))
-                                                            {
-                                                        %>
-                                                        <tr class="lobbyRow <%=item.RowStatus %>" onclick="DoJoinToGame(<%=item.GameId %>)">
-                                                            <td class="magidaInfo">
-                                                                <%=item.GameId %>
-                                                            </td>
-                                                            <td class="lobbyInfo">
-                                                                <%=item.Player1Name %>
-                                                            </td>
-                                                            <td class="lobbyInfo">
-                                                                <%=item.Amount %>
-                                                            </td>
-                                                            <td class="lobbyInfo">
-                                                                <%=item.PlayingTill %>
-                                                            </td>
-                                                            <td class="lobbyInfo">
-                                                                <%=item.LongGameStyle ? "5 კარტა" : "3 კარტა"%>
-                                                            </td>
-                                                            <td class="lobbyInfo">
-                                                                <%=item.StickAllowed ? "ურიგოთ" : "რიგით"%>
-                                                            </td>
-                                                            <td class="lobbyInfo">
-                                                                <%=item.GameStatusValue %>
-                                                            </td>
-                                                        </tr>
-                                                        <%
-                                                            }
-                                                        %>
-                                                    </table>
+                                                    <asp:Repeater runat="server" ID="RepeaterGameList" ItemType="TS.Gambling.DataProviders.BuraGameItem" DataSource='<%# GetGamesList() %>'>
+                                                        <HeaderTemplate>
+                                                            <table id="lobbytable" cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                                <thead>
+                                                                    <tr class="header">
+                                                                        <th id="header_1">
+                                                                            &nbsp;
+                                                                        </th>
+                                                                        <th id="header_2" class="sort lobbyInfo">
+                                                                            მოთამაშე
+                                                                        </th>
+                                                                        <th id="header_3" class="sort lobbyInfo">
+                                                                            თანხა
+                                                                        </th>
+                                                                        <th id="header_4" class="sort lobbyInfo">
+                                                                            რაუნდი
+                                                                        </th>
+                                                                        <th id="header_5" class="sort lobbyInfo">
+                                                                            კარტები
+                                                                        </th>
+                                                                        <th id="header_6" class="sort lobbyInfo">
+                                                                            მალიუტკა
+                                                                        </th>
+                                                                        <th id="header_7" class="sort lobbyInfo">
+                                                                            სტატუსი
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                            
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                                <tr class="lobbyRow <%# Item.RowStatus %>" onclick="DoJoinToGame(<%# Item.GameId %>)">
+                                                                    <td class="magidaInfo">
+                                                                        <%# Item.GameId %>
+                                                                    </td>
+                                                                    <td class="lobbyInfo">
+                                                                        <%# Item.Player1Name %>
+                                                                    </td>
+                                                                    <td class="lobbyInfo">
+                                                                        <%# Item.Amount %>
+                                                                    </td>
+                                                                    <td class="lobbyInfo">
+                                                                        <%# Item.PlayingTill %>
+                                                                    </td>
+                                                                    <td class="lobbyInfo">
+                                                                        <%# Item.LongGameStyle ? "5 კარტა" : "3 კარტა"%>
+                                                                    </td>
+                                                                    <td class="lobbyInfo">
+                                                                        <%# Item.StickAllowed ? "ურიგოთ" : "რიგით"%>
+                                                                    </td>
+                                                                    <td class="lobbyInfo">
+                                                                        <%# Item.GameStatusValue %>
+                                                                    </td>
+                                                                </tr>
+                                                            
+                                                        </ItemTemplate>
+                                                        <FooterTemplate>
+                                                            </table>                                                            
+                                                        </FooterTemplate>
+                                                    </asp:Repeater>
+
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                             <div style="border-bottom: 1px solid #454C56; margin-bottom: 2px;">
@@ -301,8 +303,7 @@
                         <div class="avatarContainer">
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr>
-                                    <td class="pwinFormLeft
-    BPGNinoMtavruliRegular">
+                                    <td class="pwinFormLeft BPGNinoMtavruliRegular">
                                         ფსონი
                                     </td>
                                     <td class="pwinFormRight">

@@ -60,13 +60,17 @@ namespace TS.Gambling.Bura
                 player.Balance = dbPlayer.Balance;
             }
 
+            /*
             if ((decimal)amount > player.Balance)
             {
                 throw new GamblingException(ErrorInfo.NOT_ENOUGH_MONEY);
             }
+             * */
 
             BuraPlayer bp = new BuraPlayer
-            {                
+            {
+                PlayerId = player.PlayerId,
+                ClientId = player.ClientId,
                 PlayerName = player.PlayerName,
                 Avatar = player.Avatar
             };
@@ -92,20 +96,22 @@ namespace TS.Gambling.Bura
 
             GameContext.SetCurrentGame(_games[gameId]);
 
-            GamblingModel.Entities entities = new GamblingModel.Entities();
-            GamblingModel.Player dbPlayer = entities.Players.FirstOrDefault(x => x.PlayerId == player.PlayerId);
+            GamblingModel.Player dbPlayer = GamblingController.Current.GetPlayer(player.PlayerId);
             if (dbPlayer != null)
             {
                 player.Balance = dbPlayer.Balance;
             }
-
+            /*
             if ((decimal)buraGame.Amount > player.Balance)
             {
                 throw new GamblingException(ErrorInfo.NOT_ENOUGH_MONEY);
             }
+             * */
             
             BuraPlayer bp = new BuraPlayer
             {
+                PlayerId = player.PlayerId,
+                ClientId =  player.ClientId,
                 PlayerName = player.PlayerName, 
                 Avatar = player.Avatar
             };

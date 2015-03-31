@@ -42,6 +42,7 @@ namespace TS.Gambling.Core
         public int PlayerId
         {
             get { return _playerId; }
+            set { _playerId = value; }
         }
 
         public string ClientId
