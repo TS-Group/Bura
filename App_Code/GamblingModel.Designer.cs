@@ -320,7 +320,7 @@ namespace GamblingModel
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -339,7 +339,7 @@ namespace GamblingModel
                 {
                     OnGameIdChanging(value);
                     ReportPropertyChanging("GameId");
-                    _GameId = StructuralObject.SetValidValue(value);
+                    _GameId = StructuralObject.SetValidValue(value, "GameId");
                     ReportPropertyChanged("GameId");
                     OnGameIdChanged();
                 }
@@ -364,7 +364,7 @@ namespace GamblingModel
             {
                 OnLongStyleChanging(value);
                 ReportPropertyChanging("LongStyle");
-                _LongStyle = StructuralObject.SetValidValue(value);
+                _LongStyle = StructuralObject.SetValidValue(value, "LongStyle");
                 ReportPropertyChanged("LongStyle");
                 OnLongStyleChanged();
             }
@@ -388,7 +388,7 @@ namespace GamblingModel
             {
                 OnPassHiddenCardsChanging(value);
                 ReportPropertyChanging("PassHiddenCards");
-                _PassHiddenCards = StructuralObject.SetValidValue(value);
+                _PassHiddenCards = StructuralObject.SetValidValue(value, "PassHiddenCards");
                 ReportPropertyChanged("PassHiddenCards");
                 OnPassHiddenCardsChanged();
             }
@@ -412,7 +412,7 @@ namespace GamblingModel
             {
                 OnStickAllowedChanging(value);
                 ReportPropertyChanging("StickAllowed");
-                _StickAllowed = StructuralObject.SetValidValue(value);
+                _StickAllowed = StructuralObject.SetValidValue(value, "StickAllowed");
                 ReportPropertyChanged("StickAllowed");
                 OnStickAllowedChanged();
             }
@@ -436,7 +436,7 @@ namespace GamblingModel
             {
                 OnAmountChanging(value);
                 ReportPropertyChanging("Amount");
-                _Amount = StructuralObject.SetValidValue(value);
+                _Amount = StructuralObject.SetValidValue(value, "Amount");
                 ReportPropertyChanged("Amount");
                 OnAmountChanged();
             }
@@ -460,7 +460,7 @@ namespace GamblingModel
             {
                 OnPlayTillChanging(value);
                 ReportPropertyChanging("PlayTill");
-                _PlayTill = StructuralObject.SetValidValue(value);
+                _PlayTill = StructuralObject.SetValidValue(value, "PlayTill");
                 ReportPropertyChanged("PlayTill");
                 OnPlayTillChanged();
             }
@@ -484,7 +484,7 @@ namespace GamblingModel
             {
                 OnStartDateChanging(value);
                 ReportPropertyChanging("StartDate");
-                _StartDate = StructuralObject.SetValidValue(value);
+                _StartDate = StructuralObject.SetValidValue(value, "StartDate");
                 ReportPropertyChanged("StartDate");
                 OnStartDateChanged();
             }
@@ -508,7 +508,7 @@ namespace GamblingModel
             {
                 OnEndDateChanging(value);
                 ReportPropertyChanging("EndDate");
-                _EndDate = StructuralObject.SetValidValue(value);
+                _EndDate = StructuralObject.SetValidValue(value, "EndDate");
                 ReportPropertyChanged("EndDate");
                 OnEndDateChanged();
             }
@@ -519,7 +519,6 @@ namespace GamblingModel
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -579,7 +578,7 @@ namespace GamblingModel
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -598,7 +597,7 @@ namespace GamblingModel
                 {
                     OnBuraGameEventIdChanging(value);
                     ReportPropertyChanging("BuraGameEventId");
-                    _BuraGameEventId = StructuralObject.SetValidValue(value);
+                    _BuraGameEventId = StructuralObject.SetValidValue(value, "BuraGameEventId");
                     ReportPropertyChanged("BuraGameEventId");
                     OnBuraGameEventIdChanged();
                 }
@@ -623,7 +622,7 @@ namespace GamblingModel
             {
                 OnBuraGamePlayerIdChanging(value);
                 ReportPropertyChanging("BuraGamePlayerId");
-                _BuraGamePlayerId = StructuralObject.SetValidValue(value);
+                _BuraGamePlayerId = StructuralObject.SetValidValue(value, "BuraGamePlayerId");
                 ReportPropertyChanged("BuraGamePlayerId");
                 OnBuraGamePlayerIdChanged();
             }
@@ -647,7 +646,7 @@ namespace GamblingModel
             {
                 OnEventIdChanging(value);
                 ReportPropertyChanging("EventId");
-                _EventId = StructuralObject.SetValidValue(value);
+                _EventId = StructuralObject.SetValidValue(value, "EventId");
                 ReportPropertyChanged("EventId");
                 OnEventIdChanged();
             }
@@ -671,7 +670,7 @@ namespace GamblingModel
             {
                 OnEventTypeChanging(value);
                 ReportPropertyChanging("EventType");
-                _EventType = StructuralObject.SetValidValue(value, false);
+                _EventType = StructuralObject.SetValidValue(value, false, "EventType");
                 ReportPropertyChanged("EventType");
                 OnEventTypeChanged();
             }
@@ -695,7 +694,7 @@ namespace GamblingModel
             {
                 OnEventValueChanging(value);
                 ReportPropertyChanging("EventValue");
-                _EventValue = StructuralObject.SetValidValue(value, true);
+                _EventValue = StructuralObject.SetValidValue(value, true, "EventValue");
                 ReportPropertyChanged("EventValue");
                 OnEventValueChanged();
             }
@@ -719,7 +718,7 @@ namespace GamblingModel
             {
                 OnIsEventPlayedChanging(value);
                 ReportPropertyChanging("IsEventPlayed");
-                _IsEventPlayed = StructuralObject.SetValidValue(value);
+                _IsEventPlayed = StructuralObject.SetValidValue(value, "IsEventPlayed");
                 ReportPropertyChanged("IsEventPlayed");
                 OnIsEventPlayedChanged();
             }
@@ -730,7 +729,6 @@ namespace GamblingModel
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -764,7 +762,7 @@ namespace GamblingModel
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -783,7 +781,7 @@ namespace GamblingModel
                 {
                     OnBuraGamePlayerIdChanging(value);
                     ReportPropertyChanging("BuraGamePlayerId");
-                    _BuraGamePlayerId = StructuralObject.SetValidValue(value);
+                    _BuraGamePlayerId = StructuralObject.SetValidValue(value, "BuraGamePlayerId");
                     ReportPropertyChanged("BuraGamePlayerId");
                     OnBuraGamePlayerIdChanged();
                 }
@@ -808,7 +806,7 @@ namespace GamblingModel
             {
                 OnGameIdChanging(value);
                 ReportPropertyChanging("GameId");
-                _GameId = StructuralObject.SetValidValue(value);
+                _GameId = StructuralObject.SetValidValue(value, "GameId");
                 ReportPropertyChanged("GameId");
                 OnGameIdChanged();
             }
@@ -832,7 +830,7 @@ namespace GamblingModel
             {
                 OnVersionNumberChanging(value);
                 ReportPropertyChanging("VersionNumber");
-                _VersionNumber = StructuralObject.SetValidValue(value);
+                _VersionNumber = StructuralObject.SetValidValue(value, "VersionNumber");
                 ReportPropertyChanged("VersionNumber");
                 OnVersionNumberChanged();
             }
@@ -856,7 +854,7 @@ namespace GamblingModel
             {
                 OnPlayerIdChanging(value);
                 ReportPropertyChanging("PlayerId");
-                _PlayerId = StructuralObject.SetValidValue(value);
+                _PlayerId = StructuralObject.SetValidValue(value, "PlayerId");
                 ReportPropertyChanged("PlayerId");
                 OnPlayerIdChanged();
             }
@@ -880,7 +878,7 @@ namespace GamblingModel
             {
                 OnPlayerScoreChanging(value);
                 ReportPropertyChanging("PlayerScore");
-                _PlayerScore = StructuralObject.SetValidValue(value);
+                _PlayerScore = StructuralObject.SetValidValue(value, "PlayerScore");
                 ReportPropertyChanged("PlayerScore");
                 OnPlayerScoreChanged();
             }
@@ -891,7 +889,6 @@ namespace GamblingModel
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -1057,7 +1054,7 @@ namespace GamblingModel
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1076,7 +1073,7 @@ namespace GamblingModel
                 {
                     OnGameIdChanging(value);
                     ReportPropertyChanging("GameId");
-                    _GameId = StructuralObject.SetValidValue(value);
+                    _GameId = StructuralObject.SetValidValue(value, "GameId");
                     ReportPropertyChanged("GameId");
                     OnGameIdChanged();
                 }
@@ -1103,7 +1100,7 @@ namespace GamblingModel
                 {
                     OnVersionNumberChanging(value);
                     ReportPropertyChanging("VersionNumber");
-                    _VersionNumber = StructuralObject.SetValidValue(value);
+                    _VersionNumber = StructuralObject.SetValidValue(value, "VersionNumber");
                     ReportPropertyChanged("VersionNumber");
                     OnVersionNumberChanged();
                 }
@@ -1128,7 +1125,7 @@ namespace GamblingModel
             {
                 OnGameStatusChanging(value);
                 ReportPropertyChanging("GameStatus");
-                _GameStatus = StructuralObject.SetValidValue(value, false);
+                _GameStatus = StructuralObject.SetValidValue(value, false, "GameStatus");
                 ReportPropertyChanged("GameStatus");
                 OnGameStatusChanged();
             }
@@ -1152,7 +1149,7 @@ namespace GamblingModel
             {
                 OnTrumpChanging(value);
                 ReportPropertyChanging("Trump");
-                _Trump = StructuralObject.SetValidValue(value, true);
+                _Trump = StructuralObject.SetValidValue(value, true, "Trump");
                 ReportPropertyChanged("Trump");
                 OnTrumpChanged();
             }
@@ -1176,7 +1173,7 @@ namespace GamblingModel
             {
                 OnPlayerTurnChanging(value);
                 ReportPropertyChanging("PlayerTurn");
-                _PlayerTurn = StructuralObject.SetValidValue(value);
+                _PlayerTurn = StructuralObject.SetValidValue(value, "PlayerTurn");
                 ReportPropertyChanged("PlayerTurn");
                 OnPlayerTurnChanged();
             }
@@ -1200,7 +1197,7 @@ namespace GamblingModel
             {
                 OnLastCardTakerPlayerChanging(value);
                 ReportPropertyChanging("LastCardTakerPlayer");
-                _LastCardTakerPlayer = StructuralObject.SetValidValue(value);
+                _LastCardTakerPlayer = StructuralObject.SetValidValue(value, "LastCardTakerPlayer");
                 ReportPropertyChanged("LastCardTakerPlayer");
                 OnLastCardTakerPlayerChanged();
             }
@@ -1224,7 +1221,7 @@ namespace GamblingModel
             {
                 OnPreviousCardTakerPlayerChanging(value);
                 ReportPropertyChanging("PreviousCardTakerPlayer");
-                _PreviousCardTakerPlayer = StructuralObject.SetValidValue(value);
+                _PreviousCardTakerPlayer = StructuralObject.SetValidValue(value, "PreviousCardTakerPlayer");
                 ReportPropertyChanged("PreviousCardTakerPlayer");
                 OnPreviousCardTakerPlayerChanged();
             }
@@ -1248,7 +1245,7 @@ namespace GamblingModel
             {
                 OnPlayerHasTimeoutedChanging(value);
                 ReportPropertyChanging("PlayerHasTimeouted");
-                _PlayerHasTimeouted = StructuralObject.SetValidValue(value);
+                _PlayerHasTimeouted = StructuralObject.SetValidValue(value, "PlayerHasTimeouted");
                 ReportPropertyChanged("PlayerHasTimeouted");
                 OnPlayerHasTimeoutedChanged();
             }
@@ -1272,7 +1269,7 @@ namespace GamblingModel
             {
                 OnDoublingValueChanging(value);
                 ReportPropertyChanging("DoublingValue");
-                _DoublingValue = StructuralObject.SetValidValue(value);
+                _DoublingValue = StructuralObject.SetValidValue(value, "DoublingValue");
                 ReportPropertyChanged("DoublingValue");
                 OnDoublingValueChanged();
             }
@@ -1296,7 +1293,7 @@ namespace GamblingModel
             {
                 OnLastDoublingOffererChanging(value);
                 ReportPropertyChanging("LastDoublingOfferer");
-                _LastDoublingOfferer = StructuralObject.SetValidValue(value);
+                _LastDoublingOfferer = StructuralObject.SetValidValue(value, "LastDoublingOfferer");
                 ReportPropertyChanged("LastDoublingOfferer");
                 OnLastDoublingOffererChanged();
             }
@@ -1320,7 +1317,7 @@ namespace GamblingModel
             {
                 OnDealingCardCountChanging(value);
                 ReportPropertyChanging("DealingCardCount");
-                _DealingCardCount = StructuralObject.SetValidValue(value);
+                _DealingCardCount = StructuralObject.SetValidValue(value, "DealingCardCount");
                 ReportPropertyChanged("DealingCardCount");
                 OnDealingCardCountChanged();
             }
@@ -1331,7 +1328,6 @@ namespace GamblingModel
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -1539,7 +1535,7 @@ namespace GamblingModel
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1558,7 +1554,7 @@ namespace GamblingModel
                 {
                     OnPlayerCardIdChanging(value);
                     ReportPropertyChanging("PlayerCardId");
-                    _PlayerCardId = StructuralObject.SetValidValue(value);
+                    _PlayerCardId = StructuralObject.SetValidValue(value, "PlayerCardId");
                     ReportPropertyChanged("PlayerCardId");
                     OnPlayerCardIdChanged();
                 }
@@ -1583,7 +1579,7 @@ namespace GamblingModel
             {
                 OnBuraGamePlayerIdChanging(value);
                 ReportPropertyChanging("BuraGamePlayerId");
-                _BuraGamePlayerId = StructuralObject.SetValidValue(value);
+                _BuraGamePlayerId = StructuralObject.SetValidValue(value, "BuraGamePlayerId");
                 ReportPropertyChanged("BuraGamePlayerId");
                 OnBuraGamePlayerIdChanged();
             }
@@ -1607,7 +1603,7 @@ namespace GamblingModel
             {
                 OnCardNameChanging(value);
                 ReportPropertyChanging("CardName");
-                _CardName = StructuralObject.SetValidValue(value, false);
+                _CardName = StructuralObject.SetValidValue(value, false, "CardName");
                 ReportPropertyChanged("CardName");
                 OnCardNameChanged();
             }
@@ -1618,7 +1614,6 @@ namespace GamblingModel
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -1648,7 +1643,7 @@ namespace GamblingModel
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1667,7 +1662,7 @@ namespace GamblingModel
                 {
                     OnPlacedCardIdChanging(value);
                     ReportPropertyChanging("PlacedCardId");
-                    _PlacedCardId = StructuralObject.SetValidValue(value);
+                    _PlacedCardId = StructuralObject.SetValidValue(value, "PlacedCardId");
                     ReportPropertyChanged("PlacedCardId");
                     OnPlacedCardIdChanged();
                 }
@@ -1692,7 +1687,7 @@ namespace GamblingModel
             {
                 OnBuraGamePlayerIdChanging(value);
                 ReportPropertyChanging("BuraGamePlayerId");
-                _BuraGamePlayerId = StructuralObject.SetValidValue(value);
+                _BuraGamePlayerId = StructuralObject.SetValidValue(value, "BuraGamePlayerId");
                 ReportPropertyChanged("BuraGamePlayerId");
                 OnBuraGamePlayerIdChanged();
             }
@@ -1716,7 +1711,7 @@ namespace GamblingModel
             {
                 OnCardNameChanging(value);
                 ReportPropertyChanging("CardName");
-                _CardName = StructuralObject.SetValidValue(value, false);
+                _CardName = StructuralObject.SetValidValue(value, false, "CardName");
                 ReportPropertyChanged("CardName");
                 OnCardNameChanged();
             }
@@ -1727,7 +1722,6 @@ namespace GamblingModel
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -1759,7 +1753,7 @@ namespace GamblingModel
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1778,7 +1772,7 @@ namespace GamblingModel
                 {
                     OnTakenCardIdChanging(value);
                     ReportPropertyChanging("TakenCardId");
-                    _TakenCardId = StructuralObject.SetValidValue(value);
+                    _TakenCardId = StructuralObject.SetValidValue(value, "TakenCardId");
                     ReportPropertyChanged("TakenCardId");
                     OnTakenCardIdChanged();
                 }
@@ -1803,7 +1797,7 @@ namespace GamblingModel
             {
                 OnBuraGamePlayerIdChanging(value);
                 ReportPropertyChanging("BuraGamePlayerId");
-                _BuraGamePlayerId = StructuralObject.SetValidValue(value);
+                _BuraGamePlayerId = StructuralObject.SetValidValue(value, "BuraGamePlayerId");
                 ReportPropertyChanged("BuraGamePlayerId");
                 OnBuraGamePlayerIdChanged();
             }
@@ -1827,7 +1821,7 @@ namespace GamblingModel
             {
                 OnCardNameChanging(value);
                 ReportPropertyChanging("CardName");
-                _CardName = StructuralObject.SetValidValue(value, false);
+                _CardName = StructuralObject.SetValidValue(value, false, "CardName");
                 ReportPropertyChanged("CardName");
                 OnCardNameChanged();
             }
@@ -1851,7 +1845,7 @@ namespace GamblingModel
             {
                 OnCardValueChanging(value);
                 ReportPropertyChanging("CardValue");
-                _CardValue = StructuralObject.SetValidValue(value);
+                _CardValue = StructuralObject.SetValidValue(value, "CardValue");
                 ReportPropertyChanged("CardValue");
                 OnCardValueChanged();
             }
@@ -1862,7 +1856,6 @@ namespace GamblingModel
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -1894,7 +1887,7 @@ namespace GamblingModel
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1913,7 +1906,7 @@ namespace GamblingModel
                 {
                     OnPlayerIdChanging(value);
                     ReportPropertyChanging("PlayerId");
-                    _PlayerId = StructuralObject.SetValidValue(value);
+                    _PlayerId = StructuralObject.SetValidValue(value, "PlayerId");
                     ReportPropertyChanged("PlayerId");
                     OnPlayerIdChanged();
                 }
@@ -1938,7 +1931,7 @@ namespace GamblingModel
             {
                 OnPlayerNameChanging(value);
                 ReportPropertyChanging("PlayerName");
-                _PlayerName = StructuralObject.SetValidValue(value, false);
+                _PlayerName = StructuralObject.SetValidValue(value, false, "PlayerName");
                 ReportPropertyChanged("PlayerName");
                 OnPlayerNameChanged();
             }
@@ -1962,7 +1955,7 @@ namespace GamblingModel
             {
                 OnBalanceChanging(value);
                 ReportPropertyChanging("Balance");
-                _Balance = StructuralObject.SetValidValue(value);
+                _Balance = StructuralObject.SetValidValue(value, "Balance");
                 ReportPropertyChanged("Balance");
                 OnBalanceChanged();
             }
@@ -1986,7 +1979,7 @@ namespace GamblingModel
             {
                 OnPlayerAvatarChanging(value);
                 ReportPropertyChanging("PlayerAvatar");
-                _PlayerAvatar = StructuralObject.SetValidValue(value, true);
+                _PlayerAvatar = StructuralObject.SetValidValue(value, true, "PlayerAvatar");
                 ReportPropertyChanged("PlayerAvatar");
                 OnPlayerAvatarChanged();
             }
@@ -2010,7 +2003,7 @@ namespace GamblingModel
             {
                 OnExternalPlayerIdChanging(value);
                 ReportPropertyChanging("ExternalPlayerId");
-                _ExternalPlayerId = StructuralObject.SetValidValue(value, false);
+                _ExternalPlayerId = StructuralObject.SetValidValue(value, false, "ExternalPlayerId");
                 ReportPropertyChanged("ExternalPlayerId");
                 OnExternalPlayerIdChanged();
             }
@@ -2034,7 +2027,7 @@ namespace GamblingModel
             {
                 OnFirstNameChanging(value);
                 ReportPropertyChanging("FirstName");
-                _FirstName = StructuralObject.SetValidValue(value, true);
+                _FirstName = StructuralObject.SetValidValue(value, true, "FirstName");
                 ReportPropertyChanged("FirstName");
                 OnFirstNameChanged();
             }
@@ -2058,7 +2051,7 @@ namespace GamblingModel
             {
                 OnLastNameChanging(value);
                 ReportPropertyChanging("LastName");
-                _LastName = StructuralObject.SetValidValue(value, true);
+                _LastName = StructuralObject.SetValidValue(value, true, "LastName");
                 ReportPropertyChanged("LastName");
                 OnLastNameChanged();
             }
@@ -2082,7 +2075,7 @@ namespace GamblingModel
             {
                 OnEmailChanging(value);
                 ReportPropertyChanging("Email");
-                _Email = StructuralObject.SetValidValue(value, true);
+                _Email = StructuralObject.SetValidValue(value, true, "Email");
                 ReportPropertyChanged("Email");
                 OnEmailChanged();
             }
@@ -2106,7 +2099,7 @@ namespace GamblingModel
             {
                 OnBirthDateChanging(value);
                 ReportPropertyChanging("BirthDate");
-                _BirthDate = StructuralObject.SetValidValue(value, true);
+                _BirthDate = StructuralObject.SetValidValue(value, true, "BirthDate");
                 ReportPropertyChanged("BirthDate");
                 OnBirthDateChanged();
             }
@@ -2130,7 +2123,7 @@ namespace GamblingModel
             {
                 OnGenderChanging(value);
                 ReportPropertyChanging("Gender");
-                _Gender = StructuralObject.SetValidValue(value, true);
+                _Gender = StructuralObject.SetValidValue(value, true, "Gender");
                 ReportPropertyChanged("Gender");
                 OnGenderChanged();
             }
@@ -2141,7 +2134,6 @@ namespace GamblingModel
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -2260,5 +2252,4 @@ namespace GamblingModel
 
     #endregion
 
-    
 }
