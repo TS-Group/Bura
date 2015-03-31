@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -46,7 +45,7 @@ public partial class Pages_Bura_Controller_ViewGame : System.Web.UI.Page
             // draw game info
             StringBuilder gameInfo = new StringBuilder();
             gameInfo.AppendFormat("GameId: {0}<br />", buraGame.GameId)
-                .AppendFormat("GameDate: {0}<br />", buraGame.StartDate.ToString())
+                .AppendFormat("GameDate: {0}<br />", buraGame.StartDate)
                 .AppendFormat("PlayingTill: {0}<br />", buraGame.PlayTill)
                 .AppendFormat("Amount: {0}<br />", buraGame.Amount)
                 .AppendFormat("IsStickAllowed: {0}<br />", buraGame.StickAllowed)

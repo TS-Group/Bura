@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using TS.Gambling.Bura;
 
 public partial class Pages_Bura_Controller_GameController : System.Web.UI.Page

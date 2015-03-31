@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using TS.Gambling.Bura;
 using TS.Gambling.Core;
 using TS.Gambling.Web;
@@ -50,7 +48,7 @@ public partial class Pages_Bura_Board : System.Web.UI.Page
         BoardPlaceHolder.Controls.Add(new LiteralControl(response.Html.ToString()));
         BoardUpdatePanel.Update();
 
-        String script = string.Format("<script>{0}</script>", response.Script.ToString());
+        String script = string.Format("<script>{0}</script>", response.Script);
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "initBura", script, false);
     }
 

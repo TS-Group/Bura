@@ -1,69 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="GamblingModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-        <EntityContainer Name="GamblingModelStoreContainer">
-          <EntitySet Name="BuraGame" EntityType="GamblingModel.Store.BuraGame" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BuraGameEvent" EntityType="GamblingModel.Store.BuraGameEvent" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BuraGamePlayer" EntityType="GamblingModel.Store.BuraGamePlayer" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BuraGameVersion" EntityType="GamblingModel.Store.BuraGameVersion" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BuraPlayerCard" EntityType="GamblingModel.Store.BuraPlayerCard" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BuraPlayerPlacedCard" EntityType="GamblingModel.Store.BuraPlayerPlacedCard" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="BuraPlayerTakenCard" EntityType="GamblingModel.Store.BuraPlayerTakenCard" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Player" EntityType="GamblingModel.Store.Player" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_BuraGameEvent_BuraGamePlayer" Association="GamblingModel.Store.FK_BuraGameEvent_BuraGamePlayer">
-            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
-            <End Role="BuraGameEvent" EntitySet="BuraGameEvent" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraGamePlayer_BuraGame" Association="GamblingModel.Store.FK_BuraGamePlayer_BuraGame">
-            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
-            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraGamePlayer_Player" Association="GamblingModel.Store.FK_BuraGamePlayer_Player">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraGameVersion_BuraGame" Association="GamblingModel.Store.FK_BuraGameVersion_BuraGame">
-            <End Role="BuraGame" EntitySet="BuraGame" />
-            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraGameVersion_LastCardTakerPlayer" Association="GamblingModel.Store.FK_BuraGameVersion_LastCardTakerPlayer">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraGameVersion_LastDoublingOffererPlayer" Association="GamblingModel.Store.FK_BuraGameVersion_LastDoublingOffererPlayer">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraGameVersion_PlayerTurn" Association="GamblingModel.Store.FK_BuraGameVersion_PlayerTurn">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraGameVersion_PreviousCardTakerPlayer" Association="GamblingModel.Store.FK_BuraGameVersion_PreviousCardTakerPlayer">
-            <End Role="Player" EntitySet="Player" />
-            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraPlayerCard_GamePlayer" Association="GamblingModel.Store.FK_BuraPlayerCard_GamePlayer">
-            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
-            <End Role="BuraPlayerCard" EntitySet="BuraPlayerCard" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraPlayerPlacedCard_Player" Association="GamblingModel.Store.FK_BuraPlayerPlacedCard_Player">
-            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
-            <End Role="BuraPlayerPlacedCard" EntitySet="BuraPlayerPlacedCard" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BuraPlayerTakenCard_BuraGamePlayer" Association="GamblingModel.Store.FK_BuraPlayerTakenCard_BuraGamePlayer">
-            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
-            <End Role="BuraPlayerTakenCard" EntitySet="BuraPlayerTakenCard" />
-          </AssociationSet>
-        </EntityContainer>
+    <Schema Namespace="GamblingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BuraGame">
           <Key>
             <PropertyRef Name="GameId" />
           </Key>
-          <Property Name="GameId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GameId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LongStyle" Type="bit" Nullable="false" />
           <Property Name="PassHiddenCards" Type="bit" Nullable="false" />
           <Property Name="StickAllowed" Type="bit" Nullable="false" />
@@ -76,10 +22,10 @@
           <Key>
             <PropertyRef Name="BuraGameEventId" />
           </Key>
-          <Property Name="BuraGameEventId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BuraGameEventId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BuraGamePlayerId" Type="int" Nullable="false" />
           <Property Name="EventId" Type="int" Nullable="false" />
-          <Property Name="EventType" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="EventType" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="EventValue" Type="varchar" MaxLength="50" />
           <Property Name="IsEventPlayed" Type="bit" Nullable="false" />
         </EntityType>
@@ -87,7 +33,7 @@
           <Key>
             <PropertyRef Name="BuraGamePlayerId" />
           </Key>
-          <Property Name="BuraGamePlayerId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BuraGamePlayerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GameId" Type="int" Nullable="false" />
           <Property Name="VersionNumber" Type="int" Nullable="false" />
           <Property Name="PlayerId" Type="int" Nullable="false" />
@@ -100,7 +46,7 @@
           </Key>
           <Property Name="GameId" Type="int" Nullable="false" />
           <Property Name="VersionNumber" Type="int" Nullable="false" />
-          <Property Name="GameStatus" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="GameStatus" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Trump" Type="varchar" MaxLength="50" />
           <Property Name="PlayerTurn" Type="int" />
           <Property Name="LastCardTakerPlayer" Type="int" />
@@ -114,40 +60,45 @@
           <Key>
             <PropertyRef Name="PlayerCardId" />
           </Key>
-          <Property Name="PlayerCardId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerCardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BuraGamePlayerId" Type="int" Nullable="false" />
-          <Property Name="CardName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CardName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="BuraPlayerPlacedCard">
           <Key>
             <PropertyRef Name="PlacedCardId" />
           </Key>
-          <Property Name="PlacedCardId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PlacedCardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BuraGamePlayerId" Type="int" Nullable="false" />
-          <Property Name="CardName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CardName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="BuraPlayerTakenCard">
           <Key>
             <PropertyRef Name="TakenCardId" />
           </Key>
-          <Property Name="TakenCardId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TakenCardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BuraGamePlayerId" Type="int" Nullable="false" />
-          <Property Name="CardName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CardName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CardValue" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Player">
           <Key>
             <PropertyRef Name="PlayerId" />
           </Key>
-          <Property Name="PlayerId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ClientId" Type="int" Nullable="false" />
-          <Property Name="PlayerName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Balance" Type="numeric" Nullable="false" Scale="2" />
-          <Property Name="PlayerAvatar" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="PlayerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExternalPlayerId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PlayerName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Balance" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PlayerAvatar" Type="varchar" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="BirthDate" Type="varchar" MaxLength="50" />
+          <Property Name="Gender" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_BuraGameEvent_BuraGamePlayer">
-          <End Role="BuraGamePlayer" Type="GamblingModel.Store.BuraGamePlayer" Multiplicity="1" />
-          <End Role="BuraGameEvent" Type="GamblingModel.Store.BuraGameEvent" Multiplicity="*" />
+          <End Role="BuraGamePlayer" Type="Self.BuraGamePlayer" Multiplicity="1" />
+          <End Role="BuraGameEvent" Type="Self.BuraGameEvent" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BuraGamePlayer">
               <PropertyRef Name="BuraGamePlayerId" />
@@ -158,8 +109,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraGamePlayer_BuraGame">
-          <End Role="BuraGameVersion" Type="GamblingModel.Store.BuraGameVersion" Multiplicity="1" />
-          <End Role="BuraGamePlayer" Type="GamblingModel.Store.BuraGamePlayer" Multiplicity="*" />
+          <End Role="BuraGameVersion" Type="Self.BuraGameVersion" Multiplicity="1" />
+          <End Role="BuraGamePlayer" Type="Self.BuraGamePlayer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BuraGameVersion">
               <PropertyRef Name="GameId" />
@@ -172,8 +123,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraGamePlayer_Player">
-          <End Role="Player" Type="GamblingModel.Store.Player" Multiplicity="1" />
-          <End Role="BuraGamePlayer" Type="GamblingModel.Store.BuraGamePlayer" Multiplicity="*" />
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="BuraGamePlayer" Type="Self.BuraGamePlayer" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Player">
               <PropertyRef Name="PlayerId" />
@@ -184,8 +135,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraGameVersion_BuraGame">
-          <End Role="BuraGame" Type="GamblingModel.Store.BuraGame" Multiplicity="1" />
-          <End Role="BuraGameVersion" Type="GamblingModel.Store.BuraGameVersion" Multiplicity="*" />
+          <End Role="BuraGame" Type="Self.BuraGame" Multiplicity="1" />
+          <End Role="BuraGameVersion" Type="Self.BuraGameVersion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BuraGame">
               <PropertyRef Name="GameId" />
@@ -196,8 +147,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraGameVersion_LastCardTakerPlayer">
-          <End Role="Player" Type="GamblingModel.Store.Player" Multiplicity="0..1" />
-          <End Role="BuraGameVersion" Type="GamblingModel.Store.BuraGameVersion" Multiplicity="*" />
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <End Role="BuraGameVersion" Type="Self.BuraGameVersion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Player">
               <PropertyRef Name="PlayerId" />
@@ -208,8 +159,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraGameVersion_LastDoublingOffererPlayer">
-          <End Role="Player" Type="GamblingModel.Store.Player" Multiplicity="0..1" />
-          <End Role="BuraGameVersion" Type="GamblingModel.Store.BuraGameVersion" Multiplicity="*" />
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <End Role="BuraGameVersion" Type="Self.BuraGameVersion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Player">
               <PropertyRef Name="PlayerId" />
@@ -220,8 +171,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraGameVersion_PlayerTurn">
-          <End Role="Player" Type="GamblingModel.Store.Player" Multiplicity="0..1" />
-          <End Role="BuraGameVersion" Type="GamblingModel.Store.BuraGameVersion" Multiplicity="*" />
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <End Role="BuraGameVersion" Type="Self.BuraGameVersion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Player">
               <PropertyRef Name="PlayerId" />
@@ -232,8 +183,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraGameVersion_PreviousCardTakerPlayer">
-          <End Role="Player" Type="GamblingModel.Store.Player" Multiplicity="0..1" />
-          <End Role="BuraGameVersion" Type="GamblingModel.Store.BuraGameVersion" Multiplicity="*" />
+          <End Role="Player" Type="Self.Player" Multiplicity="0..1" />
+          <End Role="BuraGameVersion" Type="Self.BuraGameVersion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Player">
               <PropertyRef Name="PlayerId" />
@@ -244,8 +195,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraPlayerCard_GamePlayer">
-          <End Role="BuraGamePlayer" Type="GamblingModel.Store.BuraGamePlayer" Multiplicity="1" />
-          <End Role="BuraPlayerCard" Type="GamblingModel.Store.BuraPlayerCard" Multiplicity="*" />
+          <End Role="BuraGamePlayer" Type="Self.BuraGamePlayer" Multiplicity="1" />
+          <End Role="BuraPlayerCard" Type="Self.BuraPlayerCard" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BuraGamePlayer">
               <PropertyRef Name="BuraGamePlayerId" />
@@ -256,8 +207,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraPlayerPlacedCard_Player">
-          <End Role="BuraGamePlayer" Type="GamblingModel.Store.BuraGamePlayer" Multiplicity="1" />
-          <End Role="BuraPlayerPlacedCard" Type="GamblingModel.Store.BuraPlayerPlacedCard" Multiplicity="*" />
+          <End Role="BuraGamePlayer" Type="Self.BuraGamePlayer" Multiplicity="1" />
+          <End Role="BuraPlayerPlacedCard" Type="Self.BuraPlayerPlacedCard" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BuraGamePlayer">
               <PropertyRef Name="BuraGamePlayerId" />
@@ -268,8 +219,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BuraPlayerTakenCard_BuraGamePlayer">
-          <End Role="BuraGamePlayer" Type="GamblingModel.Store.BuraGamePlayer" Multiplicity="1" />
-          <End Role="BuraPlayerTakenCard" Type="GamblingModel.Store.BuraPlayerTakenCard" Multiplicity="*" />
+          <End Role="BuraGamePlayer" Type="Self.BuraGamePlayer" Multiplicity="1" />
+          <End Role="BuraPlayerTakenCard" Type="Self.BuraPlayerTakenCard" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BuraGamePlayer">
               <PropertyRef Name="BuraGamePlayerId" />
@@ -279,11 +230,65 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="GamblingModelStoreContainer">
+          <EntitySet Name="BuraGame" EntityType="Self.BuraGame" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="BuraGameEvent" EntityType="Self.BuraGameEvent" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="BuraGamePlayer" EntityType="Self.BuraGamePlayer" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="BuraGameVersion" EntityType="Self.BuraGameVersion" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="BuraPlayerCard" EntityType="Self.BuraPlayerCard" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="BuraPlayerPlacedCard" EntityType="Self.BuraPlayerPlacedCard" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="BuraPlayerTakenCard" EntityType="Self.BuraPlayerTakenCard" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <AssociationSet Name="FK_BuraGameEvent_BuraGamePlayer" Association="Self.FK_BuraGameEvent_BuraGamePlayer">
+            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
+            <End Role="BuraGameEvent" EntitySet="BuraGameEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraGamePlayer_BuraGame" Association="Self.FK_BuraGamePlayer_BuraGame">
+            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
+            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraGamePlayer_Player" Association="Self.FK_BuraGamePlayer_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraGameVersion_BuraGame" Association="Self.FK_BuraGameVersion_BuraGame">
+            <End Role="BuraGame" EntitySet="BuraGame" />
+            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraGameVersion_LastCardTakerPlayer" Association="Self.FK_BuraGameVersion_LastCardTakerPlayer">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraGameVersion_LastDoublingOffererPlayer" Association="Self.FK_BuraGameVersion_LastDoublingOffererPlayer">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraGameVersion_PlayerTurn" Association="Self.FK_BuraGameVersion_PlayerTurn">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraGameVersion_PreviousCardTakerPlayer" Association="Self.FK_BuraGameVersion_PreviousCardTakerPlayer">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="BuraGameVersion" EntitySet="BuraGameVersion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraPlayerCard_GamePlayer" Association="Self.FK_BuraPlayerCard_GamePlayer">
+            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
+            <End Role="BuraPlayerCard" EntitySet="BuraPlayerCard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraPlayerPlacedCard_Player" Association="Self.FK_BuraPlayerPlacedCard_Player">
+            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
+            <End Role="BuraPlayerPlacedCard" EntitySet="BuraPlayerPlacedCard" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BuraPlayerTakenCard_BuraGamePlayer" Association="Self.FK_BuraPlayerTakenCard_BuraGamePlayer">
+            <End Role="BuraGamePlayer" EntitySet="BuraGamePlayer" />
+            <End Role="BuraPlayerTakenCard" EntitySet="BuraPlayerTakenCard" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="GamblingModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+      <Schema Namespace="GamblingModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="BuraGames" EntityType="GamblingModel.BuraGame" />
           <EntitySet Name="BuraGameEvents" EntityType="GamblingModel.BuraGameEvent" />
           <EntitySet Name="BuraGamePlayers" EntityType="GamblingModel.BuraGamePlayer" />
@@ -341,21 +346,21 @@
           <Key>
             <PropertyRef Name="GameId" />
           </Key>
-          <Property Name="GameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="LongStyle" Type="Boolean" Nullable="false" />
           <Property Name="PassHiddenCards" Type="Boolean" Nullable="false" />
           <Property Name="StickAllowed" Type="Boolean" Nullable="false" />
           <Property Name="Amount" Type="Double" Nullable="false" />
           <Property Name="PlayTill" Type="Int32" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" />
-          <Property Name="EndDate" Type="DateTime" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="BuraGameVersions" Relationship="GamblingModel.FK_BuraGameVersion_BuraGame" FromRole="BuraGame" ToRole="BuraGameVersion" />
         </EntityType>
         <EntityType Name="BuraGameEvent">
           <Key>
             <PropertyRef Name="BuraGameEventId" />
           </Key>
-          <Property Name="BuraGameEventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BuraGameEventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="BuraGamePlayerId" Type="Int32" Nullable="false" />
           <Property Name="EventId" Type="Int32" Nullable="false" />
           <Property Name="EventType" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
@@ -366,7 +371,7 @@
           <Key>
             <PropertyRef Name="BuraGamePlayerId" />
           </Key>
-          <Property Name="BuraGamePlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BuraGamePlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="GameId" Type="Int32" Nullable="false" />
           <Property Name="VersionNumber" Type="Int32" Nullable="false" />
           <Property Name="PlayerId" Type="Int32" Nullable="false" />
@@ -384,7 +389,7 @@
           </Key>
           <Property Name="GameId" Type="Int32" Nullable="false" />
           <Property Name="VersionNumber" Type="Int32" Nullable="false" />
-          <Property Name="GameStatus" Type="String" Nullable="false" />
+          <Property Name="GameStatus" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Trump" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="PlayerTurn" Type="Int32" />
           <Property Name="LastCardTakerPlayer" Type="Int32" />
@@ -403,7 +408,7 @@
           <Key>
             <PropertyRef Name="PlayerCardId" />
           </Key>
-          <Property Name="PlayerCardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerCardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="BuraGamePlayerId" Type="Int32" Nullable="false" />
           <Property Name="CardName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
         </EntityType>
@@ -411,7 +416,7 @@
           <Key>
             <PropertyRef Name="PlacedCardId" />
           </Key>
-          <Property Name="PlacedCardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlacedCardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="BuraGamePlayerId" Type="Int32" Nullable="false" />
           <Property Name="CardName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
         </EntityType>
@@ -419,7 +424,7 @@
           <Key>
             <PropertyRef Name="TakenCardId" />
           </Key>
-          <Property Name="TakenCardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TakenCardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="BuraGamePlayerId" Type="Int32" Nullable="false" />
           <Property Name="CardName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="CardValue" Type="Int32" Nullable="false" />
@@ -502,16 +507,21 @@
           <Key>
             <PropertyRef Name="PlayerId" />
           </Key>
-          <Property Type="Int32" Name="PlayerId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="ClientId" Nullable="false" />
+          <Property Type="Int32" Name="PlayerId" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="PlayerName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Decimal" Name="Balance" Nullable="false" Precision="18" Scale="2" />
-          <Property Type="String" Name="PlayerAvatar" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PlayerAvatar" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="BuraGamePlayers" Relationship="GamblingModel.FK_BuraGamePlayer_Player" FromRole="Player" ToRole="BuraGamePlayer" />
           <NavigationProperty Name="BuraGameVersions" Relationship="GamblingModel.FK_BuraGameVersion_LastCardTakerPlayer" FromRole="Player" ToRole="BuraGameVersion" />
           <NavigationProperty Name="BuraGameVersions1" Relationship="GamblingModel.FK_BuraGameVersion_LastDoublingOffererPlayer" FromRole="Player" ToRole="BuraGameVersion" />
           <NavigationProperty Name="BuraGameVersions2" Relationship="GamblingModel.FK_BuraGameVersion_PlayerTurn" FromRole="Player" ToRole="BuraGameVersion" />
           <NavigationProperty Name="BuraGameVersions3" Relationship="GamblingModel.FK_BuraGameVersion_PreviousCardTakerPlayer" FromRole="Player" ToRole="BuraGameVersion" />
+          <Property Name="ExternalPlayerId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BirthDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_BuraGamePlayer_Player">
           <End Type="GamblingModel.Player" Role="Player" Multiplicity="1" />
@@ -577,7 +587,7 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="GamblingModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="BuraGames"><EntityTypeMapping TypeName="GamblingModel.BuraGame"><MappingFragment StoreEntitySet="BuraGame">
             <ScalarProperty Name="GameId" ColumnName="GameId" />
@@ -636,10 +646,15 @@
           <EntitySetMapping Name="Players">
             <EntityTypeMapping TypeName="GamblingModel.Player">
               <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ExternalPlayerId" ColumnName="ExternalPlayerId" />
                 <ScalarProperty Name="PlayerAvatar" ColumnName="PlayerAvatar" />
                 <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="PlayerName" ColumnName="PlayerName" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -649,7 +664,7 @@
     </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <Connection>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
@@ -660,6 +675,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
@@ -704,24 +720,24 @@
           <ConnectorPoint PointX="9.25" PointY="15.848084309895835" />
         </AssociationConnector>
         <EntityTypeShape EntityType="GamblingModel.Player" Width="1.5" PointX="8" PointY="9.875" Height="2.9417936197916674" />
-        <AssociationConnector Association="GamblingModel.FK_BuraGamePlayer_Player" >
+        <AssociationConnector Association="GamblingModel.FK_BuraGamePlayer_Player">
           <ConnectorPoint PointX="9" PointY="12.816793619791667" />
           <ConnectorPoint PointX="9" PointY="16.018992513020834" />
           <ConnectorPoint PointX="4.625" PointY="16.018992513020834" />
         </AssociationConnector>
-        <AssociationConnector Association="GamblingModel.FK_BuraGameVersion_LastCardTakerPlayer" >
+        <AssociationConnector Association="GamblingModel.FK_BuraGameVersion_LastCardTakerPlayer">
           <ConnectorPoint PointX="8" PointY="11.345896809895834" />
           <ConnectorPoint PointX="5.375" PointY="11.345896809895834" />
         </AssociationConnector>
-        <AssociationConnector Association="GamblingModel.FK_BuraGameVersion_LastDoublingOffererPlayer" >
+        <AssociationConnector Association="GamblingModel.FK_BuraGameVersion_LastDoublingOffererPlayer">
           <ConnectorPoint PointX="8" PointY="10.547948404947917" />
           <ConnectorPoint PointX="5.375" PointY="10.547948404947917" />
         </AssociationConnector>
-        <AssociationConnector Association="GamblingModel.FK_BuraGameVersion_PlayerTurn" >
+        <AssociationConnector Association="GamblingModel.FK_BuraGameVersion_PlayerTurn">
           <ConnectorPoint PointX="8" PointY="12.143845214843751" />
           <ConnectorPoint PointX="5.375" PointY="12.143845214843751" />
         </AssociationConnector>
-        <AssociationConnector Association="GamblingModel.FK_BuraGameVersion_PreviousCardTakerPlayer" >
+        <AssociationConnector Association="GamblingModel.FK_BuraGameVersion_PreviousCardTakerPlayer">
           <ConnectorPoint PointX="8" PointY="11.744871012369792" />
           <ConnectorPoint PointX="5.375" PointY="11.744871012369792" />
         </AssociationConnector>

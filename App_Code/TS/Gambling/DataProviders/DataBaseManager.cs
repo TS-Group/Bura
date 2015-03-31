@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Configuration;
 using System.Data.SqlClient;
+using TS.Gambling.FaceBook;
 
 /// <summary>
 /// Summary description for DataBaseManager
@@ -22,14 +20,20 @@ public class DataBaseManager
         public double balance;
     }
 
-    public static ResultResponse CheckBuraRequest(string SessionId)
+    public static ResultResponse LoadPlayer(FacebookUser fbUser)
     {
         ResultResponse res = new ResultResponse();
-        string commantText = "EXEC BuraCheckLoginRequest @SessionId";
+        const string commantText = "EXEC LoadPlayer @UserId, @FirstName, @LastName, @Gender, @EMail, @BirthDate";
         string connectionString = ConfigurationManager.ConnectionStrings["GamblingConnectionString"].ToString();
         SqlConnection connection = new SqlConnection(connectionString);
         SqlCommand command = new SqlCommand(commantText, connection);
-        command.Parameters.Add(new SqlParameter("SessionId", SessionId));
+        command.Parameters.Add(new SqlParameter("UserId", fbUser.UserId));
+        command.Parameters.Add(new SqlParameter("FirstName", fbUser.FirstName));
+        command.Parameters.Add(new SqlParameter("LastName", fbUser.LastName));
+        command.Parameters.Add(new SqlParameter("Gender", fbUser.Gender));
+        command.Parameters.Add(new SqlParameter("EMail", fbUser.EMail));
+        command.Parameters.Add(new SqlParameter("BirthDate", fbUser.BirthDate));
+
         SqlDataReader reader = null;
         connection.Open();
         try
@@ -39,10 +43,10 @@ public class DataBaseManager
             {
                 throw new Exception("Cannot Create Process Request !!");
             }
-            res.errorCode = int.Parse(reader["ERROR_CODE"].ToString());
-            res.playerId = int.Parse(reader["USERID"].ToString());
-            res.username = reader["USER_NAME"].ToString();
-            res.balance = double.Parse(reader["BALANCE"].ToString());
+            res.errorCode = int.Parse(reader["ErrorCode"].ToString());
+            res.playerId = int.Parse(reader["PlayerId"].ToString());
+            res.username = reader["UserName"].ToString();
+            res.balance = double.Parse(reader["Balance"].ToString());
             return res;
         }
         finally
@@ -67,11 +71,11 @@ public class DataBaseManager
         command.Parameters.Add(new SqlParameter("p_FirstPlayerId", FirstPlayerId));
         command.Parameters.Add(new SqlParameter("p_SecondPlayerId", SecondPlayerId));
         command.Parameters.Add(new SqlParameter("p_Amount", Amount));
-        
+
         connection.Open();
         try
         {
-             command.ExecuteNonQuery();
+            command.ExecuteNonQuery();
         }
         finally
         {

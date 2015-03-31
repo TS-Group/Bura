@@ -22,12 +22,7 @@ namespace TS.Gambling.Bura
 
         public static BuraGameController CurrentInstanse
         {
-            get 
-            {
-                if (_instanse == null)
-                    _instanse = new BuraGameController();
-                return _instanse; 
-            }
+            get { return _instanse ?? (_instanse = new BuraGameController()); }
         }
 
         private BuraGameController()
@@ -35,8 +30,8 @@ namespace TS.Gambling.Bura
             _games = new Dictionary<int, BuraGame>();
         }
 
-        private Dictionary<int, BuraGame> _games;
-        private bool _stopGames = false;
+        private readonly Dictionary<int, BuraGame> _games;
+        private bool _stopGames;
 
 
         public void StopGames()
@@ -59,25 +54,32 @@ namespace TS.Gambling.Bura
                 throw new GamblingException("GameID is busy");
            
             GamblingModel.Entities entities = new GamblingModel.Entities();
-            GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == player.PlayerId).FirstOrDefault();
+            GamblingModel.Player dbPlayer = entities.Players.FirstOrDefault(x => x.PlayerId == player.PlayerId);
             if (dbPlayer != null)
             {
                 player.Balance = dbPlayer.Balance;
             }
 
+            /*
             if ((decimal)amount > player.Balance)
             {
                 throw new GamblingException(ErrorInfo.NOT_ENOUGH_MONEY);
             }
+             * */
 
-            BuraPlayer bp = new BuraPlayer();
-            bp.ClientId = player.PlayerId;
-            bp.PlayerName = player.PlayerName;
-            bp.Avatar = player.Avatar;
+            BuraPlayer bp = new BuraPlayer
+            {
+                PlayerId = player.PlayerId,
+                ClientId = player.ClientId,
+                PlayerName = player.PlayerName,
+                Avatar = player.Avatar
+            };
 
-            BuraGame game = new BuraGame(bp, playTill, amount, longGameStyle, stickAllowed, passHiddenCards);
-            game.PlayerTurn = bp.PlayerId;
-            game.GameId = gameId;
+            BuraGame game = new BuraGame(bp, playTill, amount, longGameStyle, stickAllowed, passHiddenCards)
+            {
+                PlayerTurn = bp.PlayerId,
+                GameId = gameId
+            };
 
             GameContext.SetCurrentGame(game);
             GameContext.SetCurrentPlayer(bp);
@@ -94,22 +96,25 @@ namespace TS.Gambling.Bura
 
             GameContext.SetCurrentGame(_games[gameId]);
 
-            GamblingModel.Entities entities = new GamblingModel.Entities();
-            GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == player.PlayerId).FirstOrDefault();
+            GamblingModel.Player dbPlayer = GamblingController.Current.GetPlayer(player.PlayerId);
             if (dbPlayer != null)
             {
                 player.Balance = dbPlayer.Balance;
             }
-
+            /*
             if ((decimal)buraGame.Amount > player.Balance)
             {
                 throw new GamblingException(ErrorInfo.NOT_ENOUGH_MONEY);
             }
+             * */
             
-            BuraPlayer bp = new BuraPlayer();
-            bp.ClientId = player.PlayerId;
-            bp.PlayerName = player.PlayerName;
-            bp.Avatar = player.Avatar;
+            BuraPlayer bp = new BuraPlayer
+            {
+                PlayerId = player.PlayerId,
+                ClientId =  player.ClientId,
+                PlayerName = player.PlayerName, 
+                Avatar = player.Avatar
+            };
 
             GameContext.SetCurrentPlayer(bp);
 
@@ -150,10 +155,7 @@ namespace TS.Gambling.Bura
 
         public BuraGame GetGame(int gameId)
         {
-            if (_games.ContainsKey(gameId))
-                return _games[gameId];
-            else
-                return null;
+            return _games.ContainsKey(gameId) ? _games[gameId] : null;
         }
 
         public void RemoveGame(int gameId)

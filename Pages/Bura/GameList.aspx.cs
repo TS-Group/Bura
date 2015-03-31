@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using GamblingModel;
-using TS.Gambling.Bura;
 
 public partial class Pages_Bura_GameList : System.Web.UI.Page
 {
@@ -45,7 +38,7 @@ public partial class Pages_Bura_GameList : System.Web.UI.Page
     }
     protected void ButtonCreateTable_Click(object sender, EventArgs e)
     {
-        CheckBoxCards3.Text = CheckBoxFreeTables.Attributes["class"].ToString();
+        CheckBoxCards3.Text = CheckBoxFreeTables.Attributes["class"];
         /*
         int playerId = ;
         int gameId = ;
@@ -61,6 +54,6 @@ public partial class Pages_Bura_GameList : System.Web.UI.Page
     protected void ButtonShow_Click(object sender, EventArgs e)
     {
         // TODO: Show filter
-        CheckBoxCards3.Text = CheckBoxFreeTables.Attributes["class"].ToString();
+        CheckBoxCards3.Text = CheckBoxFreeTables.Attributes["class"];
     }
 }

@@ -1,138 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using TS.Gambling.Web;
 using TS.Gambling.Bura;
-using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
 using TS.Gambling.DataProviders;
 using TS.Gambling.Core;
 using System.Globalization;
 
-public partial class Pages_BuraLobby : System.Web.UI.Page
+public partial class Pages_BuraLobby : Page
 {
-    public BuraGameListProvider.BuraGameFilter filter = new BuraGameListProvider.BuraGameFilter();
+    protected readonly BuraGameListProvider.BuraGameFilter Filter = new BuraGameListProvider.BuraGameFilter();
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-
-        if ((Session[SessionKey.SESSION_ID] == null && Request.QueryString["SessionId"] != null) ||
-            (Session[SessionKey.SESSION_ID] != null && Request.QueryString["SessionId"] != null &&
-            Session[SessionKey.SESSION_ID].ToString() != Request.QueryString["SessionId"]))
+        if (!IsPostBack)
         {
-            DataBaseManager.ResultResponse result = DataBaseManager.CheckBuraRequest(Request.QueryString["SessionId"].ToString());
-            if (result.errorCode != 0)
+            int playerId = 0;
+            if (Session[SessionKey.PLAYER_ID] != null)
             {
-                Response.Redirect("~/Pages/Bura/ErrorPage.aspx");
-                return;
+                playerId = int.Parse(Session[SessionKey.PLAYER_ID].ToString());
             }
+
             // Load game creator player object from database
-            GamblingModel.Entities entities = new GamblingModel.Entities();
-            GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == result.playerId).FirstOrDefault();
+            GamblingModel.Player dbPlayer = GamblingController.Current.GetPlayer(playerId);
 
             // Create and fill player object
-            BuraPlayer player = new BuraPlayer();
-            if (dbPlayer != null)
+            BuraPlayer player = new BuraPlayer
             {
-                player.ClientId = result.playerId;
-                player.PlayerName = dbPlayer.PlayerName;
-                player.Balance = dbPlayer.Balance;
-                player.Avatar = dbPlayer.PlayerAvatar;
-            }
-            else
-            {
-                player.ClientId = 0;
-                player.PlayerName = "Undefined";
-                player.Balance = 0;
-                player.Avatar = "1";
-            }
-
-            //LabelUserName.Text = player.PlayerName;
-            //LabelBalance.Text = player.Balance.ToString("0.00");
-            //ImagePlayerAvatar.ImageUrl = "~/Skins/NewDesign2/Images/avatars/" + player.Avatar + ".png";
+                PlayerId =  dbPlayer.PlayerId,
+                ClientId = dbPlayer.ExternalPlayerId,
+                PlayerName = dbPlayer.PlayerName,
+                Balance = dbPlayer.Balance,
+                Avatar = dbPlayer.PlayerAvatar
+            };
 
             GameContext.SetCurrentPlayer(player);
-
-            Session[SessionKey.SESSION_ID] = Request.QueryString["SessionId"];
-        }
-
-        Player bPlayer = GameContext.GetCurrentPlayer();
-        if (bPlayer != null)
-        {
-            // Load game creator player object from database
-            GamblingModel.Entities entities = new GamblingModel.Entities();
-            GamblingModel.Player dbPlayer = entities.Players.Where(x => x.PlayerId == bPlayer.PlayerId).FirstOrDefault();
-            if (dbPlayer != null)
-            {
-                bPlayer.PlayerName = dbPlayer.PlayerName;
-                bPlayer.Balance = dbPlayer.Balance;
-                bPlayer.Avatar = dbPlayer.PlayerAvatar;
-            }
-            else
-            {
-                bPlayer.ClientId = 0;
-                bPlayer.PlayerName = "Undefined";
-                bPlayer.Balance = 0;
-                bPlayer.Avatar = "1";
-            }
-            LabelUserName.Text = bPlayer.PlayerName;
-            LabelBalance.Text = bPlayer.Balance.ToString("0.00");
-            ImagePlayerAvatar.ImageUrl = "~/Skins/NewDesign2/Images/avatars/" + bPlayer.Avatar + ".png";
-
-            GameContext.SetCurrentPlayer(bPlayer);
-        }
-
-        if (!IsPostBack)
             ShowFilter();
+
+
+            LabelUserName.Text = dbPlayer.PlayerName;
+            LabelBalance.Text = dbPlayer.Balance.ToString("0.00");
+            ImagePlayerAvatar.ImageUrl = "~/Skins/NewDesign2/Images/avatars/" + dbPlayer.PlayerAvatar + ".png";
+
+        }
     }
+
+    public List<BuraGameItem> GetGamesList()
+    {
+        return BuraGameListProvider.GetBuraGamesList(Filter);
+    } 
 
     private void ShowFilter()
     {
-        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "initBura", "<script type='text/javascript'>InitLobbyScripts();</script>", false);
-        filter.AllFreeTables = CheckBoxFreeTables.Checked;
+        RepeaterGameList.DataBind();
+        ScriptManager.RegisterStartupScript(UpdatePanelLobby, UpdatePanelLobby.GetType(), "initBura", "<script type='text/javascript'>InitLobbyScripts();</script>", false);
+        Filter.AllFreeTables = CheckBoxFreeTables.Checked;
         try
         {
-            filter.playerId = GameContext.GetCurrentPlayer().PlayerId;
+            Filter.playerId = GameContext.GetCurrentPlayer().PlayerId;
         }
         catch (Exception ex)
         {
-            filter.playerId = 0;
+            Filter.playerId = 0;
         }
 
-        filter.CardType = "";
+        Filter.CardType = "";
         if (CheckBoxCards3.Checked)
-            filter.CardType += "3";
+            Filter.CardType += "3";
         if (CheckBoxCards5.Checked)
-            filter.CardType += "5";
+            Filter.CardType += "5";
 
-        filter.GameRound = "";
+        Filter.GameRound = "";
         if (CheckBoxRound3.Checked)
-            filter.GameRound += "3";
+            Filter.GameRound += "3";
         if (CheckBoxRound7.Checked)
-            filter.GameRound += "7";
+            Filter.GameRound += "7";
         if (CheckBoxRound11.Checked)
-            filter.GameRound += "11";
+            Filter.GameRound += "11";
 
-        filter.StickAllowed = "";
+        Filter.StickAllowed = "";
         if (CheckBoxStickAllowed.Checked)
-            filter.StickAllowed += "1";
+            Filter.StickAllowed += "1";
         if (CheckBoxStickNotAllowed.Checked)
-            filter.StickAllowed += "2";
+            Filter.StickAllowed += "2";
         try
         {
-            filter.FromAmount = double.Parse(fFromAmount.Text.ToString());
-            filter.ToAmount = double.Parse(fToAmount.Text.ToString());
+            Filter.FromAmount = double.Parse(fFromAmount.Text);
+            Filter.ToAmount = double.Parse(fToAmount.Text);
         }
         catch (Exception ex)
         {
-            filter.FromAmount = 0;
-            filter.ToAmount = 1000;
+            Filter.FromAmount = 0;
+            Filter.ToAmount = 1000;
         }
+        UpdatePanelLobby.DataBind();
+        UpdatePanelLobby.Update();
     }
 
     protected void ButtonCreateTable_Click(object sender, EventArgs e)
@@ -151,19 +114,19 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
         int gameId = IdGenerator.NextValue;
 
         string decimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
-        String GameAmount = TextBoxAmount.Text;
-        GameAmount = GameAmount.Replace(",", decimalSeparator).Replace(".", decimalSeparator);
+        String gameAmount = TextBoxAmount.Text;
+        gameAmount = gameAmount.Replace(",", decimalSeparator).Replace(".", decimalSeparator);
         double amount = 0;
         try
         {
-            amount = Double.Parse(GameAmount);
+            amount = Double.Parse(gameAmount);
         }
         catch (Exception ex)
         {
             amount = 0.4;
         }
 
-        TS.Gambling.Core.Player currentPlayer = GameContext.GetCurrentPlayer();
+        Player currentPlayer = GameContext.GetCurrentPlayer();
 
         if (amount < 0.4)
         {
@@ -174,7 +137,8 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             return;
         }
 
-        if (currentPlayer.Balance < System.Convert.ToDecimal(amount))
+        /* რემოვედ
+        if (currentPlayer.Balance < Convert.ToDecimal(amount) )
         {
             LabelMessageHeader.Text = "შეტყობინება";
             LabelMessage.Text = "თანხა არ არის საკმარისი მაგიდის შესაქმნელად!";
@@ -182,6 +146,7 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             ShowFilter();
         }
         else
+         * */
         {
             try
             {
@@ -194,7 +159,7 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
                 LabelMessage.Text = ex.ErrorMessage;
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "initBura", "<script type='text/javascript'>InitLobbyScripts();modal.show('MessageBox');</script>", false);
                 ShowFilter();
-            }                
+            }
         }
     }
 
@@ -205,7 +170,7 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             return;
 
         int GameId = int.Parse(eventArgument);
-        TS.Gambling.Bura.BuraGame game = BuraGameController.CurrentInstanse.GetGame(GameId);
+        BuraGame game = BuraGameController.CurrentInstanse.GetGame(GameId);
 
         // do nothing if game is empty
         if (game == null)
@@ -226,6 +191,7 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             return;
         }
 
+        /*
         if (currentPlayer.Balance < System.Convert.ToDecimal(game.Amount))
         {
             LabelMessageHeader.Text = "შეტყობინება";
@@ -235,6 +201,7 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             return;
         }
         else
+         * */
         {
             try
             {
@@ -243,7 +210,8 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
             catch (Exception ex)
             {
                 LabelMessageHeader.Text = "შეტყობინება";
-                LabelMessage.Text = "მაგიდა უკვე დაკავებულია!";
+                //LabelMessage.Text = "მაგიდა უკვე დაკავებულია!";
+                LabelMessage.Text = ex.Message + ex.StackTrace;
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "initBura", "<script type='text/javascript'>InitLobbyScripts();modal.show('MessageBox');</script>", false);
                 ShowFilter();
                 return;
@@ -258,7 +226,7 @@ public partial class Pages_BuraLobby : System.Web.UI.Page
 
     protected void ButtonReset_Click(object sender, EventArgs e)
     {
-        filter.AllFreeTables = CheckBoxFreeTables.Checked;
+        Filter.AllFreeTables = CheckBoxFreeTables.Checked;
         CheckBoxCards3.Checked = false;
         CheckBoxCards5.Checked = false;
         CheckBoxRound3.Checked = false;

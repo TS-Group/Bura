@@ -8,8 +8,6 @@
     <script src="../../Scripts/ts.crystalbet.gambling.bura.js" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="ContentBuraBody" ContentPlaceHolderID="BuraContentPlaceHolder" runat="Server">
-    <asp:ScriptManager ID="BuraScriptManager" runat="server">
-    </asp:ScriptManager>
 
     <div id="BuraBoard" class="Board">
         <!-- fixed items -->

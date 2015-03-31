@@ -19,8 +19,9 @@ namespace TS.Gambling.Core
             _lastPingTime = DateTime.Now;
         }
 
+        private int _playerId;
         private string _playerName;
-        private int _clientId;
+        private string _clientId;
         private decimal _balance;
         private string _avatar;
         private DateTime _lastPingTime;
@@ -40,10 +41,11 @@ namespace TS.Gambling.Core
 
         public int PlayerId
         {
-            get { return _clientId; }
+            get { return _playerId; }
+            set { _playerId = value; }
         }
 
-        public int ClientId
+        public string ClientId
         {
             get { return _clientId; }
             set { _clientId = value; }

@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -209,6 +210,7 @@ namespace GamblingModel
         private ObjectSet<Player> _Players;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -276,11 +278,11 @@ namespace GamblingModel
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -317,6 +319,7 @@ namespace GamblingModel
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -515,6 +518,7 @@ namespace GamblingModel
         partial void OnEndDateChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -541,6 +545,7 @@ namespace GamblingModel
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -573,6 +578,7 @@ namespace GamblingModel
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -723,6 +729,7 @@ namespace GamblingModel
         partial void OnIsEventPlayedChanged();
 
         #endregion
+
     
     }
     
@@ -756,6 +763,7 @@ namespace GamblingModel
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -882,6 +890,7 @@ namespace GamblingModel
         partial void OnPlayerScoreChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1012,6 +1021,7 @@ namespace GamblingModel
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1046,6 +1056,7 @@ namespace GamblingModel
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1319,6 +1330,7 @@ namespace GamblingModel
         partial void OnDealingCardCountChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1497,6 +1509,7 @@ namespace GamblingModel
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1525,6 +1538,7 @@ namespace GamblingModel
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1603,6 +1617,7 @@ namespace GamblingModel
         partial void OnCardNameChanged();
 
         #endregion
+
     
     }
     
@@ -1632,6 +1647,7 @@ namespace GamblingModel
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1710,6 +1726,7 @@ namespace GamblingModel
         partial void OnCardNameChanged();
 
         #endregion
+
     
     }
     
@@ -1741,6 +1758,7 @@ namespace GamblingModel
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1843,6 +1861,7 @@ namespace GamblingModel
         partial void OnCardValueChanged();
 
         #endregion
+
     
     }
     
@@ -1860,22 +1879,21 @@ namespace GamblingModel
         /// Create a new Player object.
         /// </summary>
         /// <param name="playerId">Initial value of the PlayerId property.</param>
-        /// <param name="clientId">Initial value of the ClientId property.</param>
         /// <param name="playerName">Initial value of the PlayerName property.</param>
         /// <param name="balance">Initial value of the Balance property.</param>
-        /// <param name="playerAvatar">Initial value of the PlayerAvatar property.</param>
-        public static Player CreatePlayer(global::System.Int32 playerId, global::System.Int32 clientId, global::System.String playerName, global::System.Decimal balance, global::System.String playerAvatar)
+        /// <param name="externalPlayerId">Initial value of the ExternalPlayerId property.</param>
+        public static Player CreatePlayer(global::System.Int32 playerId, global::System.String playerName, global::System.Decimal balance, global::System.String externalPlayerId)
         {
             Player player = new Player();
             player.PlayerId = playerId;
-            player.ClientId = clientId;
             player.PlayerName = playerName;
             player.Balance = balance;
-            player.PlayerAvatar = playerAvatar;
+            player.ExternalPlayerId = externalPlayerId;
             return player;
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1904,30 +1922,6 @@ namespace GamblingModel
         private global::System.Int32 _PlayerId;
         partial void OnPlayerIdChanging(global::System.Int32 value);
         partial void OnPlayerIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 ClientId
-        {
-            get
-            {
-                return _ClientId;
-            }
-            set
-            {
-                OnClientIdChanging(value);
-                ReportPropertyChanging("ClientId");
-                _ClientId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ClientId");
-                OnClientIdChanged();
-            }
-        }
-        private global::System.Int32 _ClientId;
-        partial void OnClientIdChanging(global::System.Int32 value);
-        partial void OnClientIdChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1980,7 +1974,7 @@ namespace GamblingModel
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String PlayerAvatar
         {
@@ -1992,7 +1986,7 @@ namespace GamblingModel
             {
                 OnPlayerAvatarChanging(value);
                 ReportPropertyChanging("PlayerAvatar");
-                _PlayerAvatar = StructuralObject.SetValidValue(value, false);
+                _PlayerAvatar = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("PlayerAvatar");
                 OnPlayerAvatarChanged();
             }
@@ -2000,8 +1994,153 @@ namespace GamblingModel
         private global::System.String _PlayerAvatar;
         partial void OnPlayerAvatarChanging(global::System.String value);
         partial void OnPlayerAvatarChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ExternalPlayerId
+        {
+            get
+            {
+                return _ExternalPlayerId;
+            }
+            set
+            {
+                OnExternalPlayerIdChanging(value);
+                ReportPropertyChanging("ExternalPlayerId");
+                _ExternalPlayerId = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ExternalPlayerId");
+                OnExternalPlayerIdChanged();
+            }
+        }
+        private global::System.String _ExternalPlayerId;
+        partial void OnExternalPlayerIdChanging(global::System.String value);
+        partial void OnExternalPlayerIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String FirstName
+        {
+            get
+            {
+                return _FirstName;
+            }
+            set
+            {
+                OnFirstNameChanging(value);
+                ReportPropertyChanging("FirstName");
+                _FirstName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("FirstName");
+                OnFirstNameChanged();
+            }
+        }
+        private global::System.String _FirstName;
+        partial void OnFirstNameChanging(global::System.String value);
+        partial void OnFirstNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastName
+        {
+            get
+            {
+                return _LastName;
+            }
+            set
+            {
+                OnLastNameChanging(value);
+                ReportPropertyChanging("LastName");
+                _LastName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastName");
+                OnLastNameChanged();
+            }
+        }
+        private global::System.String _LastName;
+        partial void OnLastNameChanging(global::System.String value);
+        partial void OnLastNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Email
+        {
+            get
+            {
+                return _Email;
+            }
+            set
+            {
+                OnEmailChanging(value);
+                ReportPropertyChanging("Email");
+                _Email = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Email");
+                OnEmailChanged();
+            }
+        }
+        private global::System.String _Email;
+        partial void OnEmailChanging(global::System.String value);
+        partial void OnEmailChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String BirthDate
+        {
+            get
+            {
+                return _BirthDate;
+            }
+            set
+            {
+                OnBirthDateChanging(value);
+                ReportPropertyChanging("BirthDate");
+                _BirthDate = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("BirthDate");
+                OnBirthDateChanged();
+            }
+        }
+        private global::System.String _BirthDate;
+        partial void OnBirthDateChanging(global::System.String value);
+        partial void OnBirthDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Gender
+        {
+            get
+            {
+                return _Gender;
+            }
+            set
+            {
+                OnGenderChanging(value);
+                ReportPropertyChanging("Gender");
+                _Gender = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Gender");
+                OnGenderChanged();
+            }
+        }
+        private global::System.String _Gender;
+        partial void OnGenderChanging(global::System.String value);
+        partial void OnGenderChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2116,8 +2255,10 @@ namespace GamblingModel
         }
 
         #endregion
+
     }
 
     #endregion
+
     
 }

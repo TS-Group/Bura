@@ -36,7 +36,7 @@ namespace TS.Gambling.DataProviders
             foreach (int gameId in BuraGameController.CurrentInstanse.BuraGames.Keys)
             {
                 BuraGame game = BuraGameController.CurrentInstanse.BuraGames[gameId];
-
+                /*
                 // Do not display players own created game
                 if (game.Players.ContainsKey(filter.playerId))
                     continue;
@@ -46,7 +46,7 @@ namespace TS.Gambling.DataProviders
                     continue;
 
                 // Check stick allowed or not
-                if (filter.StickAllowed != null && filter.StickAllowed.Length > 0)
+                if (!string.IsNullOrEmpty(filter.StickAllowed))
                 {
                     string sAllowed = game.StickAllowed ? "1" : "2";
                     if (!filter.StickAllowed.Contains(sAllowed))
@@ -54,7 +54,7 @@ namespace TS.Gambling.DataProviders
                 }
 
                 // Check card type
-                if (filter.CardType != null && filter.CardType.Length > 0)
+                if (!string.IsNullOrEmpty(filter.CardType))
                 {
                     string cType = game.LongGameStyle ? "5" : "3";
                     if (!filter.CardType.Contains(cType))
@@ -62,7 +62,7 @@ namespace TS.Gambling.DataProviders
                 }
 
                 // Check game round
-                if (filter.GameRound != null && filter.GameRound.Length > 0)
+                if (!string.IsNullOrEmpty(filter.GameRound))
                 {
                     if (!filter.GameRound.Contains(game.PlayingTill.ToString()))
                         continue;
@@ -99,7 +99,7 @@ namespace TS.Gambling.DataProviders
             }
 
 
-            list.Sort(delegate(BuraGameItem BuraItem1, BuraGameItem BuraItem2) { return BuraItem2.RowStatus.CompareTo(BuraItem1.RowStatus); });
+            list.Sort((buraItem1, buraItem2) => buraItem2.RowStatus.CompareTo(buraItem1.RowStatus));
             return list;
         }
 
